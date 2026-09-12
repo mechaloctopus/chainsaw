@@ -1,0 +1,8 @@
+---
+interface Props { kicker?: string }
+const { kicker = 'What goes wrong' } = Astro.props;
+---
+<section class="block block--fail">
+  <h2 class="block__kicker">{kicker}</h2>
+  <ul class="failmodes"><slot /></ul>
+</section>

@@ -1,0 +1,10 @@
+---
+/** A labelled content block. Modules are authored as
+ *  objective -> procedure -> failure modes -> stop-work -> field card (C-4). */
+interface Props { kicker: string; fail?: boolean; id?: string }
+const { kicker, fail = false, id } = Astro.props;
+---
+<section class:list={['block', fail && 'block--fail']} id={id}>
+  <h2 class="block__kicker">{kicker}</h2>
+  <div class="flow"><slot /></div>
+</section>

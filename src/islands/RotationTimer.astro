@@ -1,0 +1,151 @@
+---
+/** Interactive #9 — tank-for-tank rotation timer.
+ *  The point is not the clock. The point is that swapping roles forces a rest
+ *  and a fresh look at the job every 20–30 minutes. With JS off, the re-assess
+ *  questions below are still the whole of the content (T-4). */
+const questions = [
+  'Has anything moved — the pile, the log, the crown, the root ball?',
+  'Is the escape path still clear, or did we just bury it in brush?',
+  'Is anything hung up above us that was not there when we started?',
+  'Is the chain still cutting chips, or are we making dust?',
+  'Is either of us shaky, overheated, or out of water?',
+  'Has a bystander wandered in?',
+];
+---
+<div class="timer" data-timer>
+  <div class="timer__face">
+    <p class="timer__clock" data-timer-clock aria-live="off">00:00</p>
+    <p class="timer__state" data-timer-state role="status">Not running</p>
+    <div class="btn-row no-print">
+      <button class="btn btn--solid" type="button" data-timer-toggle>Start tank</button>
+      <button class="btn" type="button" data-timer-swap>Swap now</button>
+    </div>
+    <p class="timer__target">
+      <label for="timer-target">Prompt me after</label>
+      <select id="timer-target" data-timer-target>
+        <option value="20">20 min</option>
+        <option value="25" selected>25 min</option>
+        <option value="30">30 min</option>
+      </select>
+      <span data-timer-count class="timer__count"></span>
+    </p>
+  </div>
+
+  <div class="timer__reassess">
+    <h3>The six questions at every swap</h3>
+    <ol class="timer__qs">
+      {questions.map((q) => <li>{q}</li>)}
+    </ol>
+    <p class="timer__fine">
+      Saw off or braked and set down before either of you walks into the other's work
+      zone. The swap is a stop, not a handoff on the move.
+    </p>
+  </div>
+</div>
+
+<script>
+  const KEY = 'saw-timer';
+  const pad = (n: number) => String(Math.floor(n)).padStart(2, '0');
+
+  document.querySelectorAll<HTMLElement>('[data-timer]').forEach((root) => {
+    const clock = root.querySelector<HTMLElement>('[data-timer-clock]')!;
+    const state = root.querySelector<HTMLElement>('[data-timer-state]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-timer-toggle]')!;
+    const swap = root.querySelector<HTMLButtonElement>('[data-timer-swap]')!;
+    const target = root.querySelector<HTMLSelectElement>('[data-timer-target]')!;
+    const count = root.querySelector<HTMLElement>('[data-timer-count]')!;
+
+    type S = { startedAt: number | null; tanks: number; minutes: number };
+    const load = (): S => {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (raw) return { tanks: 0, minutes: 25, startedAt: null, ...JSON.parse(raw) };
+      } catch {}
+      return { startedAt: null, tanks: 0, minutes: 25 };
+    };
+    const save = (s: S) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
+
+    let s = load();
+    target.value = String(s.minutes);
+    let over = false;
+
+    const tick = () => {
+      if (s.startedAt === null) {
+        clock.textContent = '00:00';
+        clock.classList.remove('is-over');
+        state.textContent = s.tanks ? `Stopped. ${s.tanks} tank${s.tanks === 1 ? '' : 's'} logged.` : 'Not running';
+        toggle.textContent = 'Start tank';
+        return;
+      }
+      const secs = (Date.now() - s.startedAt) / 1000;
+      clock.textContent = `${pad(secs / 60)}:${pad(secs % 60)}`;
+      toggle.textContent = 'Stop';
+      const due = secs >= s.minutes * 60;
+      clock.classList.toggle('is-over', due);
+      if (due) {
+        state.textContent = 'Swap roles. Run the six questions before anyone restarts.';
+        if (!over) { over = true; try { navigator.vibrate?.([400, 150, 400]); } catch {} }
+      } else {
+        const left = Math.ceil(s.minutes * 60 - secs);
+        state.textContent = `Running — swap in ${pad(left / 60)}:${pad(left % 60)}`;
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      s.startedAt = s.startedAt === null ? Date.now() : null;
+      over = false;
+      save(s); tick();
+    });
+    swap.addEventListener('click', () => {
+      if (s.startedAt !== null) s.tanks += 1;
+      s.startedAt = Date.now();
+      over = false;
+      save(s); tick();
+      count.textContent = s.tanks ? `${s.tanks} swapped` : '';
+    });
+    target.addEventListener('change', () => {
+      s.minutes = Number.parseInt(target.value, 10) || 25;
+      over = false;
+      save(s); tick();
+    });
+
+    count.textContent = s.tanks ? `${s.tanks} swapped` : '';
+    tick();
+    setInterval(tick, 1000);
+  });
+</script>
+
+<style>
+  .timer { display: grid; gap: 1.25rem; }
+  .timer__face {
+    border: 2px solid var(--text);
+    background: var(--surface-lift);
+    padding: 1rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .timer__clock {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3.5rem, 1rem + 16vw, 6rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Overdue is a prompt, not a hazard: it stays in --accent, never --hazard. */
+  .timer__clock.is-over { color: var(--accent); }
+  .timer__state { font-weight: 700; min-height: 3rem; }
+  .timer__target { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: var(--text-meta); }
+  .timer__target select {
+    min-height: var(--tap);
+    padding: 0.4rem 0.5rem;
+    border: 2px solid var(--line-strong);
+    background: var(--surface);
+    font-family: var(--font-mono);
+  }
+  .timer__count { color: var(--text-quiet); }
+  .timer__qs { padding-left: 1.5rem; display: grid; gap: 0.55rem; }
+  .timer__qs li { font-weight: 600; }
+  .timer__qs li::marker { font-family: var(--font-mono); color: var(--accent); font-weight: 700; }
+  .timer__fine { font-size: var(--text-meta); color: var(--text-quiet); margin-top: 0.7rem; }
+</style>

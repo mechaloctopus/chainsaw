@@ -1,0 +1,44 @@
+---
+import Plate from './Plate.astro';
+---
+<Plate caption="Looking down on the stump. The hinge is the only thing steering the tree. Uniform thickness, roughly a tenth of the diameter, and you never cut through it.">
+  <svg viewBox="0 0 440 300" class="dwg" role="img" aria-labelledby="hf-t hf-d">
+    <title id="hf-t">Plan view of a stump showing face cut, hinge and back cut</title>
+    <desc id="hf-d">
+      A stump seen from above. A wedge-shaped face cut is removed from the side facing the
+      intended fall direction. Behind it, an untouched strip of wood of even thickness runs
+      across the stump: the hinge, roughly ten percent of the trunk diameter. The back cut
+      comes in from the opposite side and stops before the hinge, leaving it intact. The
+      tree falls in the direction the face cut points.
+    </desc>
+
+    <circle class="wood-end" cx="180" cy="150" r="112" />
+    <circle cx="180" cy="150" r="112" fill="none" class="rule" />
+    <circle cx="180" cy="150" r="104" fill="none" class="rule" opacity="0.5" />
+
+    <!-- face cut (open face), pointing right = fall direction -->
+    <path class="bark" d="M292 150 214 80v140z" opacity="0.25" />
+    <path class="cut" d="M292 150 214 80M292 150 214 220" />
+    <text x="300" y="96">Face cut</text>
+    <text x="300" y="114" class="quiet">opens toward the fall</text>
+
+    <!-- hinge -->
+    <path class="danger-fill" d="M206 78h16v144h-16z" opacity="0.9" />
+    <text x="176" y="266" text-anchor="middle">Hinge</text>
+    <text x="176" y="284" text-anchor="middle" class="quiet">even thickness, about 10% of diameter</text>
+    <path class="danger" d="M214 240v18M214 258h-30" />
+
+    <!-- back cut -->
+    <path class="cut-2" d="M68 150h130" />
+    <text x="18" y="140">Back cut</text>
+    <text x="18" y="122" class="quiet">stops short — never through</text>
+
+    <!-- fall direction -->
+    <path class="arrow" d="M330 190h84M414 190l-10-7M414 190l-10 7" />
+    <text x="330" y="214">Falls this way</text>
+
+    <!-- wedge -->
+    <path class="metal" d="M96 168h34l-6 14H96z" />
+    <text x="96" y="200" class="quiet">plastic wedge — never steel</text>
+  </svg>
+</Plate>

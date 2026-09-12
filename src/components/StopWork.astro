@@ -1,0 +1,19 @@
+---
+/** The refusal principle, Rule S-3. The site's thesis, as a named component.
+ *  If you don't feel safe doing it, don't do it. */
+interface Props {
+  /** What triggers the refusal — appears as the label. */
+  trigger?: string;
+  /** Who or what actually handles it. */
+  who?: string;
+}
+const { trigger = 'Stop work', who } = Astro.props;
+---
+<aside class="stopwork" role="note" aria-label={`Stop work: ${trigger}`}>
+  <p class="stopwork__label">Stop work — {trigger}</p>
+  <div class="stopwork__body"><slot /></div>
+  <p class="stopwork__tag">
+    Nobody on a volunteer crew is graded on bravery. Flag it, rope it off, and wait for
+    {who ? ` ${who}.` : ' someone who is equipped for it.'}
+  </p>
+</aside>

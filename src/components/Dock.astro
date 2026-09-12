@@ -1,0 +1,40 @@
+---
+/** Primary navigation lives in the bottom third on mobile. Rule D-4.
+ *  Every target is at least 56px tall. Rule D-3. */
+import { u, isCurrent } from '../lib/url';
+const path = Astro.url.pathname;
+const items = [
+  { href: '/modules/', label: 'Modules' },
+  { href: '/modules/12-downed-power-lines/', label: 'Power lines', hazard: true },
+  { href: '/field-card/', label: 'Field card' },
+  { href: '/search/', label: 'Search' },
+];
+---
+<nav class="dock no-print" aria-label="Main">
+  {items.map((item) => (
+    <a href={u(item.href)} aria-current={isCurrent(path, item.href) ? 'page' : undefined}>
+      {item.label === 'Modules' && (
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 3v18"></path><path d="M7 6.5h14M7 12h14M7 17.5h11"></path>
+        </svg>
+      )}
+      {item.hazard && (
+        <svg class="dock__hazard" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13.6 1.5 4.2 13.4h5.3L8 22.5l9.8-12.3h-5.6z"></path>
+        </svg>
+      )}
+      {item.label === 'Field card' && (
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="2.5" y="4.5" width="19" height="15" rx="1.5"></rect>
+          <path d="M6 9h8M6 13h12M6 16h7"></path>
+        </svg>
+      )}
+      {item.label === 'Search' && (
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.4 15.4 21 21"></path>
+        </svg>
+      )}
+      {item.label}
+    </a>
+  ))}
+</nav>

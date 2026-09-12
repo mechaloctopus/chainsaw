@@ -1,0 +1,45 @@
+---
+import Plate from './Plate.astro';
+---
+<Plate caption="Thirty feet is further than it feels. It is about two pickup trucks parked nose to tail — and that is the minimum, for a line lying still, before it moves.">
+  <svg viewBox="0 0 440 220" class="dwg" role="img" aria-labelledby="tf-t tf-d">
+    <title id="tf-t">Thirty feet shown against two pickup trucks parked end to end</title>
+    <desc id="tf-d">
+      A scale comparison. A downed power line sits at the left. Thirty feet of clearance
+      is drawn as a dimension line spanning roughly two full-size pickup trucks parked
+      nose to tail, with a person standing at the far end.
+    </desc>
+
+    <path class="ground-h" d="M10 176h420" />
+
+    <!-- the line on the ground -->
+    <path class="danger" d="M18 176c14-10 26 6 40-4" />
+    <circle class="danger-fill" cx="24" cy="172" r="7" />
+    <text x="14" y="202" class="quiet">downed line</text>
+
+    <!-- truck 1 -->
+    <g transform="translate(70 112)">
+      <path class="ink" d="M6 34h146v14H6zM22 4h56l14 14h48q8 0 8 8v10H6V26q0-8 8-8h8z" />
+      <circle cx="36" cy="52" r="12" class="ink" />
+      <circle cx="124" cy="52" r="12" class="ink" />
+    </g>
+    <!-- truck 2 -->
+    <g transform="translate(228 112)">
+      <path class="ink" d="M6 34h146v14H6zM22 4h56l14 14h48q8 0 8 8v10H6V26q0-8 8-8h8z" />
+      <circle cx="36" cy="52" r="12" class="ink" />
+      <circle cx="124" cy="52" r="12" class="ink" />
+    </g>
+
+    <!-- person at 30 ft -->
+    <g transform="translate(398 116)">
+      <circle cx="8" cy="8" r="8" class="ink" />
+      <path d="M8 18v22M8 24l-10 8M8 24l10 8M8 40l-8 20M8 40l9 20" stroke="var(--text)"
+            stroke-width="4" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- dimension -->
+    <path class="danger" d="M24 96h372M24 88v16M396 88v16" />
+    <rect x="150" y="78" width="124" height="34" class="danger-fill" />
+    <text x="212" y="95" class="onhaz" text-anchor="middle" dy="0.34em" style="font-size:19px">30 FEET</text>
+  </svg>
+</Plate>

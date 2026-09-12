@@ -1,0 +1,189 @@
+---
+/** Interactive #7 — chain finder. Bar stamp in, shopping line out.
+ *  Zero-JS (T-4): the three reference tables under the tool carry every number
+ *  the tool would have told you. */
+import { pitches, gauges, chainTypes, rakerGeneral } from '../data/chain';
+---
+<div class="finder" data-finder>
+  <div class="note">
+    <span class="note__label">Where the numbers are</span>
+    <p>
+      All three are stamped on the bar, usually near the tail where the cover sits: the
+      <b>pitch</b>, the <b>gauge</b>, and often the <b>drive link count</b>. Wipe the oil
+      off with your thumb and look. If the bar is too worn to read, count the drive links
+      — the little tangs that ride in the groove — on the old chain.
+    </p>
+  </div>
+
+  <form class="finder__form" data-finder-form>
+    <div class="finder__field">
+      <label for="cf-pitch">Pitch</label>
+      <select id="cf-pitch" name="pitch">
+        <option value="">Pick one</option>
+        {pitches.map((p) => <option value={p.code}>{p.code === '3/8LP' ? '3/8 LP' : p.code}</option>)}
+      </select>
+    </div>
+    <div class="finder__field">
+      <label for="cf-gauge">Gauge</label>
+      <select id="cf-gauge" name="gauge">
+        <option value="">Pick one</option>
+        {gauges.map((g) => <option value={g.code}>{g.code}</option>)}
+      </select>
+    </div>
+    <div class="finder__field">
+      <label for="cf-dl">Drive links</label>
+      <input id="cf-dl" name="dl" type="number" min="20" max="200" step="1" inputmode="numeric" placeholder="72" />
+    </div>
+  </form>
+
+  <output class="finder__out" data-finder-out hidden aria-live="polite"></output>
+
+  <h3>Pitch, and the file that fits it</h3>
+  <div class="table-scroll">
+    <table>
+      <caption class="sr-only">Chain pitch, file size and where each is used</caption>
+      <thead><tr><th scope="col">Pitch</th><th scope="col">Round file</th><th scope="col">Usually on</th><th scope="col">Notes</th></tr></thead>
+      <tbody>
+        {pitches.map((p) => (
+          <tr>
+            <td><span class="spec">{p.code === '3/8LP' ? '3/8 LP' : p.code}</span></td>
+            <td>
+              <span class="spec">{p.file}</span>
+              <span class="spec-src spec-src--unverified"> [check your chain brand]</span>
+            </td>
+            <td>{p.common}</td>
+            <td>{p.note}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="finder__fine">
+    File sizes vary a little between Oregon, STIHL and Carlton. Match the file to the
+    chain you actually own — a file one size off puts the wrong curve in the tooth.
+  </p>
+
+  <h3>Gauge — the thickness of the drive link</h3>
+  <div class="table-scroll">
+    <table>
+      <caption class="sr-only">Chain gauge options</caption>
+      <thead><tr><th scope="col">Gauge</th><th scope="col">Notes</th></tr></thead>
+      <tbody>
+        {gauges.map((g) => (
+          <tr><td><span class="spec">{g.label}</span></td><td>{g.note}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="finder__fine">
+    Gauge has to match the bar groove exactly. Too thin and the chain wobbles and
+    throws; too thick and it will not seat at all.
+  </p>
+
+  <h3>Which chain for storm work</h3>
+  <div class="table-scroll">
+    <table>
+      <caption class="sr-only">Chain types rated for storm cleanup</caption>
+      <thead><tr><th scope="col">Type</th><th scope="col">For cleanup</th><th scope="col">Why</th></tr></thead>
+      <tbody>
+        {chainTypes.map((c) => (
+          <tr>
+            <td>{c.label}</td>
+            <td><b>{c.stormRating === 'best' ? 'Use this' : c.stormRating === 'ok' ? 'Workable' : 'Avoid'}</b></td>
+            <td>{c.note}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="finder__fine">
+    Depth gauges for general use run around <span class="spec">{rakerGeneral.value}</span>
+    <span class="spec-src spec-src--unverified"> [set with a gauge tool for your chain]</span>.
+  </p>
+</div>
+
+<script>
+  import { pitches, gauges, chainTypes } from '../data/chain';
+
+  const esc = (s: string) =>
+    s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  document.querySelectorAll<HTMLElement>('[data-finder]').forEach((root) => {
+    const form = root.querySelector<HTMLFormElement>('[data-finder-form]')!;
+    const out = root.querySelector<HTMLElement>('[data-finder-out]')!;
+    const semi = chainTypes.find((c) => c.code === 'semi-chisel')!;
+
+    const render = () => {
+      const data = new FormData(form);
+      const pitch = pitches.find((p) => p.code === data.get('pitch'));
+      const gauge = gauges.find((g) => g.code === data.get('gauge'));
+      const dlRaw = String(data.get('dl') ?? '').trim();
+      const dl = dlRaw ? Number.parseInt(dlRaw, 10) : NaN;
+
+      if (!pitch && !gauge && !dlRaw) { out.hidden = true; out.innerHTML = ''; return; }
+
+      const missing: string[] = [];
+      if (!pitch) missing.push('pitch');
+      if (!gauge) missing.push('gauge');
+      if (!Number.isFinite(dl)) missing.push('drive link count');
+
+      const label = [
+        pitch ? (pitch.code === '3/8LP' ? '3/8 LP' : pitch.code) : '?',
+        gauge ? gauge.code : '?',
+        Number.isFinite(dl) ? `${dl} DL` : '? DL',
+      ].join(' · ');
+
+      const parts: string[] = [
+        `<h3 class="finder__outhead">Ask for: <span class="spec">${esc(label)}</span></h3>`,
+      ];
+      if (missing.length) {
+        parts.push(
+          `<p class="finder__warn">Still need the ${missing.map(esc).join(' and the ')}. All three have to match or the chain will not run.</p>`,
+        );
+      }
+      if (pitch) {
+        parts.push(
+          `<p>File this pitch with a <b><span class="spec">${esc(pitch.file)}</span></b> round file — confirm against your chain brand’s chart.</p>`,
+        );
+      }
+      parts.push(`<p>For storm debris, buy <b>${esc(semi.label)}</b>. ${esc(semi.note)}</p>`);
+      parts.push(
+        `<p class="finder__fine">Buy <b>two to four</b> of them per saw. A rock in a root ball kills a chain instantly; swapping is three minutes, filing in the field is twenty.</p>`,
+      );
+      out.innerHTML = parts.join('');
+      out.hidden = false;
+    };
+
+    form.addEventListener('input', render);
+    form.addEventListener('change', render);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  });
+</script>
+
+<style>
+  .finder { display: grid; gap: 1rem; }
+  .finder h3 { margin-top: 0.6rem; }
+  .finder__form { display: grid; gap: 0.75rem; }
+  @media (min-width: 34rem) { .finder__form { grid-template-columns: repeat(3, 1fr); } }
+  .finder__field { display: grid; gap: 0.3rem; }
+  .finder__field label { font-family: var(--font-display); font-weight: 800; font-size: 1rem; }
+  .finder__field :is(select, input) {
+    min-height: var(--tap);
+    padding: 0.55rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+    background: var(--surface-lift);
+    border: 2px solid var(--line-strong);
+    width: 100%;
+  }
+  .finder__out {
+    display: block;
+    border: 2px solid var(--text);
+    background: var(--surface-lift);
+    padding: 0.9rem 1rem;
+  }
+  .finder__out > * + * { margin-top: 0.55rem; }
+  .finder__outhead { font-family: var(--font-display); font-weight: 800; font-size: var(--text-h3); }
+  .finder__warn { font-weight: 700; border-left: 4px solid var(--accent); padding-left: 0.6rem; }
+  .finder__fine { font-size: var(--text-meta); color: var(--text-quiet); }
+</style>

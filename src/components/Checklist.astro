@@ -1,0 +1,53 @@
+---
+/** An ordered ritual you run every time. Renders as a plain readable list with
+ *  no JS; with JS the boxes tick and survive a reload, because you get
+ *  interrupted halfway through a pre-start check (Rule T-4). */
+interface Props {
+  /** Stable id — the storage key. */
+  id: string;
+  ordered?: boolean;
+}
+const { id, ordered = true } = Astro.props;
+const Tag = ordered ? 'ol' : 'ul';
+---
+<div data-checklist={id}>
+  <Tag class="checklist">
+    <slot />
+  </Tag>
+  <p class="no-print" style="margin-top:.6rem;">
+    <button type="button" class="checklist__reset" data-checklist-reset hidden>Clear all boxes</button>
+  </p>
+</div>
+
+<script>
+  // Progressive enhancement only. Never the carrier of a fact (Rule S-1).
+  const read = (k: string) => {
+    try { return JSON.parse(localStorage.getItem('saw-check:' + k) || '[]') as string[]; }
+    catch { return []; }
+  };
+  const write = (k: string, v: string[]) => {
+    try { localStorage.setItem('saw-check:' + k, JSON.stringify(v)); } catch {}
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-checklist]').forEach((root) => {
+    const key = root.dataset.checklist!;
+    const boxes = Array.from(root.querySelectorAll<HTMLInputElement>('input[type=checkbox]'));
+    const done = new Set(read(key));
+    boxes.forEach((box) => { if (done.has(box.value)) box.checked = true; });
+
+    const reset = root.querySelector<HTMLButtonElement>('[data-checklist-reset]');
+    if (reset) reset.hidden = false;
+
+    root.addEventListener('change', (e) => {
+      const box = e.target as HTMLInputElement;
+      if (box.type !== 'checkbox') return;
+      box.checked ? done.add(box.value) : done.delete(box.value);
+      write(key, [...done]);
+    });
+    reset?.addEventListener('click', () => {
+      boxes.forEach((b) => (b.checked = false));
+      done.clear();
+      write(key, []);
+    });
+  });
+</script>

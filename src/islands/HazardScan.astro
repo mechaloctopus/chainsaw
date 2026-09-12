@@ -1,0 +1,369 @@
+---
+/** Interactive #1 — Hazard Scan. The hero.
+ *
+ *  The skill this whole site teaches is the skill of looking, so the homepage
+ *  makes you do it. Nothing in the scene is drawn in --hazard: the orange
+ *  appears only where you find something that can kill you (Rule D-1).
+ *
+ *  With JS off the five hazards are simply listed under the drawing, named and
+ *  explained — the facts are never carried by the interaction (Rule S-1). */
+import { sceneHazards as hz } from '../data/hazard-scene';
+import { u } from '../lib/url';
+---
+<section class="scan" data-scan aria-labelledby="scan-h">
+  <div class="shell">
+    <h1 id="scan-h" class="scan__head">
+      Five things in this yard<br />can kill you.<span class="scan__sub">Find them.</span>
+    </h1>
+  </div>
+
+  <figure class="scan__fig">
+    <svg viewBox="0 0 800 480" class="scene" role="img" aria-labelledby="scene-t scene-d">
+      <title id="scene-t">A Kaua‘i yard after a hurricane, with five hidden hazards</title>
+      <desc id="scene-d">
+        A large albizia lies across a yard, its root ball half out of the ground. A
+        sapling is bent double and pinned under the trunk. A broken limb hangs in a
+        standing tree. A power line has been dragged down into the branches. A neighbour
+        stands watching with a bike, close to the log. All five are named and explained in
+        the list below.
+      </desc>
+
+      <defs>
+        <pattern id="dirt-hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+          <line x1="0" y1="0" x2="0" y2="14" stroke="var(--color-ink)" stroke-opacity="0.16" stroke-width="3" />
+        </pattern>
+        <clipPath id="scene-clip"><rect x="0" y="0" width="800" height="480" /></clipPath>
+      </defs>
+
+      <g clip-path="url(#scene-clip)">
+        <!-- sky, and the hard light that comes after a storm -->
+        <rect x="0" y="0" width="800" height="480" class="sky" />
+        <path class="light" d="M470-40 800-40 800 300 250 40z" />
+
+        <!-- ridge line -->
+        <path class="ridge" d="M0 306 84 238l52 30 58-62 62 50 48-30 62 44 58-30 82 46 56-34 80 40 78-38 42 24v82H0z" />
+
+        <!-- ground -->
+        <rect x="0" y="356" width="800" height="124" class="ground" />
+        <rect x="0" y="356" width="800" height="124" fill="url(#dirt-hatch)" />
+        <path class="ground-line" d="M0 356h800" />
+
+        <!-- standing tree, snapped top -->
+        <path class="trunk" d="M118 356q-6-120 2-208l30-4q10 92 6 212z" />
+        <path class="trunk" d="M150 144l-4-30 18 22-6 14z" />
+        <path class="limb" d="M150 196 208 172M120 240 66 224M148 268l52-16" />
+        <!-- the hung limb, caught in the fork -->
+        <g data-shape="widowmaker">
+          <path class="limb-broke" d="M96 128 196 186" />
+          <path class="limb-broke thin" d="M196 186 236 176M120 142 104 108" />
+        </g>
+
+        <!-- the downed albizia -->
+        <path class="log" d="M292 296c118-30 250-20 470-42l6 44c-214 40-350 32-468 46z" />
+        <path class="log-end" d="M760 254c14-2 24 6 26 20s-6 24-20 26z" />
+        <path class="log-shade" d="M296 326c116-12 250-6 462-42l4 14c-210 40-348 32-464 46z" />
+        <!-- crown, pale brittle albizia wood, running off the right edge -->
+        <path class="crown" d="M700 258 800 190M716 262 800 246M712 276 800 300M694 268 780 212M706 286 800 340" />
+
+        <!-- root ball: still hinged, still holding everything up -->
+        <g data-shape="rootball">
+          <path class="hole" d="M196 356q10-34 54-38l40 6-6 32z" />
+          <path class="rootmass" d="M286 254q-56-6-84 30t14 72q34 26 76 8 26-12 26-56 0-48-32-54z" />
+          <path class="roots" d="M236 258 200 226M212 286 168 274M212 324 166 336M244 350 214 380M282 250 296 210M300 294 344 288" />
+        </g>
+
+        <!-- spring pole: a sapling bent double under the trunk -->
+        <g data-shape="springpole">
+          <path class="sapling" d="M470 356c-4-46 6-84-14-96s-46 14-58 44" />
+          <path class="sapling thin" d="M402 308l-18 10M408 296l-20-2" />
+        </g>
+
+        <!-- the conductor, dragged down into the branches -->
+        <g data-shape="conductor">
+          <path class="pole" d="M646 356V132h12v224z" />
+          <path class="crossarm" d="M604 148h96v10h-96z" />
+          <circle class="insulator" cx="616" cy="142" r="5" />
+          <circle class="insulator" cx="688" cy="142" r="5" />
+          <path class="wire" d="M688 146c14 26 24 60 8 84" />
+          <path class="wire" d="M616 146c-10 40-22 66-58 84-44 22-90 26-132 22" />
+        </g>
+
+        <!-- the neighbour who came to watch -->
+        <g data-shape="bystander">
+          <circle class="person" cx="702" cy="366" r="9" />
+          <path class="person-line" d="M702 376v26M702 384l-12 10M702 384l12 8M702 402l-8 20M702 402l10 20" />
+          <circle class="bike" cx="738" cy="416" r="13" />
+          <circle class="bike" cx="768" cy="416" r="13" />
+          <path class="bike-frame" d="M738 416h30M752 416l6-16h12" />
+        </g>
+
+        <!-- markers: drawn last, orange only once found -->
+        <g class="marks">
+          {hz.map((h) => (
+            <g class="mark" data-mark={h.id} aria-hidden="true">
+              <circle class="mark__ring" cx={h.cx} cy={h.cy} r={h.r} />
+              <line class="mark__lead" x1={h.cx} y1={h.cy} x2={h.lx} y2={h.ly} />
+              <g class="mark__chip" transform={`translate(${h.lx} ${h.ly})`}>
+                <rect
+                  x={h.anchor === 'middle' ? -(h.label.length * 4.6 + 14) : h.anchor === 'end' ? -(h.label.length * 9.2 + 28) : 0}
+                  y="-15"
+                  width={h.label.length * 9.2 + 28}
+                  height="30"
+                />
+                <text x={h.anchor === 'middle' ? 0 : h.anchor === 'end' ? -14 : 14} y="0" dy="0.34em" text-anchor={h.anchor}>{h.label}</text>
+              </g>
+            </g>
+          ))}
+        </g>
+
+        <!-- hit targets, added by script only; inert without JS -->
+        <g class="hits" data-hits hidden></g>
+      </g>
+    </svg>
+
+    <div class="shell scan__bar no-print">
+      <p class="scan__score" data-score role="status">Five hazards. Tap the ones you can see.</p>
+      <button class="btn" type="button" data-reveal>Show me what I missed</button>
+    </div>
+  </figure>
+
+  <div class="shell railed">
+    <div class="scan__answers flow" data-answers>
+      <h2 class="scan__answers-h">What is in the scene</h2>
+      <ol class="scan__list">
+        {hz.map((h) => (
+          <li data-answer={h.id}>
+            <h3>{h.label}</h3>
+            <p>{h.what}</p>
+            <p class="scan__why">{h.why}</p>
+            <p class="no-print"><a href={u(h.href)}>Read the module →</a></p>
+          </li>
+        ))}
+      </ol>
+      <p class="scan__fine">
+        There is no score and no pass. A real yard has more than five, and the one that
+        gets people is the one nobody was looking for.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { sceneHazards } from '../data/hazard-scene';
+
+  const NS = 'http://www.w3.org/2000/svg';
+
+  document.querySelectorAll<HTMLElement>('[data-scan]').forEach((root) => {
+    const svg = root.querySelector<SVGSVGElement>('svg')!;
+    const hits = svg.querySelector<SVGGElement>('[data-hits]')!;
+    const score = root.querySelector<HTMLElement>('[data-score]')!;
+    const answers = root.querySelector<HTMLElement>('[data-answers]')!;
+    const reveal = root.querySelector<HTMLButtonElement>('[data-reveal]')!;
+
+    const found = new Set<string>();
+    let misses = 0;
+    let done = false;
+
+    // The answers are in the DOM for everyone; JS folds them away so there is
+    // something to find. Progressive enhancement, never the reverse.
+    answers.hidden = true;
+    root.querySelectorAll<HTMLElement>('[data-mark]').forEach((m) => m.classList.remove('is-found'));
+
+    const say = () => {
+      if (done) {
+        const missed = sceneHazards.filter((h) => !found.has(h.id));
+        score.textContent = missed.length
+          ? `You found ${found.size} of 5. You walked past: ${missed.map((h) => h.label.toLowerCase()).join(', ')}.`
+          : `All five. Now do it again in a real yard, out loud, with your partner.`;
+      } else if (found.size === sceneHazards.length) {
+        score.textContent = 'All five found. Read what each one does below.';
+      } else {
+        score.textContent =
+          `${found.size} of 5 found` +
+          (misses ? ` · ${misses} look${misses === 1 ? '' : 's'} that found nothing` : '');
+      }
+    };
+
+    const finish = () => {
+      done = true;
+      answers.hidden = false;
+      sceneHazards.forEach((h) => {
+        root.querySelector(`[data-mark="${h.id}"]`)?.classList.add('is-found');
+        if (!found.has(h.id)) root.querySelector(`[data-answer="${h.id}"]`)?.classList.add('is-missed');
+      });
+      reveal.textContent = 'Reset the scene';
+      say();
+    };
+
+    const hit = (h: (typeof sceneHazards)[number], btn: SVGElement) => {
+      if (found.has(h.id) || done) return;
+      found.add(h.id);
+      root.querySelector(`[data-mark="${h.id}"]`)?.classList.add('is-found');
+      btn.setAttribute('aria-pressed', 'true');
+      btn.setAttribute('aria-label', `Found: ${h.label}`);
+      if (found.size === sceneHazards.length) finish();
+      else say();
+    };
+
+    // Targets are injected rather than shipped in the HTML so that a
+    // no-JS reader is never offered a control that does nothing.
+    hits.hidden = false;
+    sceneHazards.forEach((h) => {
+      const g = document.createElementNS(NS, 'circle');
+      g.setAttribute('cx', String(h.cx));
+      g.setAttribute('cy', String(h.cy));
+      g.setAttribute('r', String(h.r));
+      g.setAttribute('class', 'hit');
+      g.setAttribute('role', 'button');
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('aria-pressed', 'false');
+      g.setAttribute('aria-label', `Hazard, unidentified, ${h.id}`);
+      const go = (e: Event) => { e.stopPropagation(); hit(h, g); };
+      g.addEventListener('click', go);
+      g.addEventListener('keydown', (e) => {
+        const k = (e as KeyboardEvent).key;
+        if (k === 'Enter' || k === ' ') { e.preventDefault(); go(e); }
+      });
+      hits.appendChild(g);
+    });
+
+    svg.addEventListener('click', (e) => {
+      if (done || found.size === sceneHazards.length) return;
+      const pt = svg.createSVGPoint();
+      pt.x = (e as MouseEvent).clientX;
+      pt.y = (e as MouseEvent).clientY;
+      const p = pt.matrixTransform(svg.getScreenCTM()!.inverse());
+      misses += 1;
+      const x = document.createElementNS(NS, 'path');
+      x.setAttribute('d', `M${p.x - 9} ${p.y - 9}l18 18M${p.x + 9} ${p.y - 9}l-18 18`);
+      x.setAttribute('class', 'miss');
+      hits.appendChild(x);
+      say();
+    });
+
+    reveal.addEventListener('click', () => {
+      if (!done) { finish(); return; }
+      done = false;
+      found.clear();
+      misses = 0;
+      answers.hidden = true;
+      hits.querySelectorAll('.miss').forEach((n) => n.remove());
+      hits.querySelectorAll('.hit').forEach((n) => {
+        n.setAttribute('aria-pressed', 'false');
+        n.setAttribute('aria-label', 'Hazard, unidentified');
+      });
+      root.querySelectorAll('.is-found').forEach((n) => n.classList.remove('is-found'));
+      root.querySelectorAll('.is-missed').forEach((n) => n.classList.remove('is-missed'));
+      reveal.textContent = 'Show me what I missed';
+      say();
+    });
+
+    say();
+  });
+</script>
+
+<style>
+  .scan { display: grid; gap: 0; }
+  .scan__head {
+    font-size: var(--text-mega);
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    padding-block: 1.5rem 1rem;
+    max-width: 22ch;
+  }
+  .scan__sub { display: block; color: var(--accent); }
+  .scan__fig { margin: 0; }
+  .scene {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-block: 2px solid var(--line-strong);
+    touch-action: manipulation;
+  }
+
+  /* Scene ink. No token may be --hazard here: the orange belongs to the
+     markers, and only after you have found something. */
+  .scene .sky { fill: var(--surface-inset); }
+  .scene .light { fill: color-mix(in oklab, var(--color-pith) 55%, var(--surface-inset)); }
+  .scene .ridge { fill: color-mix(in oklab, var(--color-canopy) 34%, var(--surface-inset)); }
+  .scene .ground { fill: color-mix(in oklab, var(--color-dirt) 62%, var(--surface)); }
+  .scene .ground-line { stroke: var(--color-ink); stroke-opacity: 0.45; stroke-width: 2; fill: none; }
+  .scene .trunk { fill: color-mix(in oklab, var(--color-canopy) 82%, var(--color-ink)); }
+  .scene .limb {
+    stroke: color-mix(in oklab, var(--color-canopy) 82%, var(--color-ink));
+    stroke-width: 9; stroke-linecap: round; fill: none;
+  }
+  .scene .limb-broke { stroke: var(--color-ink); stroke-width: 13; stroke-linecap: round; fill: none; }
+  .scene .limb-broke.thin { stroke-width: 7; }
+  .scene .log { fill: color-mix(in oklab, var(--color-pith) 78%, var(--color-dirt)); }
+  .scene .log-shade { fill: color-mix(in oklab, var(--color-dirt) 55%, var(--color-ink)); }
+  .scene .log-end { fill: color-mix(in oklab, var(--color-pith) 92%, var(--color-dirt)); }
+  .scene .crown {
+    stroke: color-mix(in oklab, var(--color-pith) 70%, var(--color-dirt));
+    stroke-width: 8; stroke-linecap: round; fill: none;
+  }
+  .scene .hole { fill: var(--color-ink); }
+  .scene .rootmass { fill: color-mix(in oklab, var(--color-dirt) 78%, var(--color-ink)); }
+  .scene .roots {
+    stroke: color-mix(in oklab, var(--color-dirt) 70%, var(--color-ink));
+    stroke-width: 7; stroke-linecap: round; fill: none;
+  }
+  .scene .sapling {
+    stroke: color-mix(in oklab, var(--color-canopy) 70%, var(--color-ink));
+    stroke-width: 8; stroke-linecap: round; fill: none;
+  }
+  .scene .sapling.thin { stroke-width: 5; }
+  .scene .pole, .scene .crossarm { fill: color-mix(in oklab, var(--color-ink) 72%, var(--color-dirt)); }
+  .scene .insulator { fill: var(--color-steel); }
+  .scene .wire { stroke: var(--color-ink); stroke-width: 3; fill: none; stroke-linecap: round; }
+  .scene .person { fill: var(--color-ink); }
+  .scene .person-line, .scene .bike-frame {
+    stroke: var(--color-ink); stroke-width: 4; fill: none; stroke-linecap: round;
+  }
+  .scene .bike { fill: none; stroke: var(--color-ink); stroke-width: 3.5; }
+
+  /* Markers */
+  .scene .mark { opacity: 0; }
+  .scene .mark.is-found { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .scene .mark { transition: opacity 0.18s ease-out; }
+  }
+  .scene .mark__ring { fill: none; stroke: var(--color-hazard); stroke-width: 5; }
+  .scene .mark__lead { stroke: var(--color-hazard); stroke-width: 3; }
+  .scene .mark__chip rect { fill: var(--color-hazard); }
+  .scene .mark__chip text {
+    fill: var(--color-ink);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 17px;
+  }
+
+  .scene .hit { fill: transparent; cursor: pointer; }
+  .scene .hit:focus-visible { outline: none; fill: color-mix(in oklab, var(--color-ink) 12%, transparent); stroke: var(--focus); stroke-width: 4; }
+  .scene .miss { stroke: var(--color-steel); stroke-width: 4; opacity: 0.8; }
+
+  .scan__bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .scan__score { font-weight: 700; max-width: 46ch; }
+  .scan__answers { padding-top: 1.75rem; }
+  .scan__answers-h { font-size: var(--text-h2); }
+  .scan__list { list-style: none; padding: 0 !important; display: grid; gap: 0; margin: 0; }
+  .scan__list li {
+    border-top: 1px solid var(--line);
+    padding: 1rem 0;
+    display: grid;
+    gap: 0.4rem;
+    max-width: none;
+  }
+  .scan__list li.is-missed { border-left: 0.5rem solid var(--hazard); padding-left: 0.9rem; }
+  .scan__list h3 { font-size: var(--text-h3); }
+  .scan__why { font-weight: 600; }
+  .scan__fine { font-size: var(--text-meta); color: var(--text-quiet); }
+</style>

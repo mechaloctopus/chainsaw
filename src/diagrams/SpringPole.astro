@@ -1,0 +1,40 @@
+---
+import Plate from './Plate.astro';
+---
+<Plate caption="Find the apex of the bend, stand outside the arc, and take small shaving cuts on the outside of the bend until it releases itself.">
+  <svg viewBox="0 0 440 280" class="dwg" role="img" aria-labelledby="sp-t sp-d">
+    <title id="sp-t">A spring pole under load, with the apex and the release arc marked</title>
+    <desc id="sp-d">
+      A sapling bent over and pinned under a log. The outside of the bend — the convex
+      side — is in tension. The apex of the bend is the point of greatest load. Shallow
+      shaving cuts are made on the outside of the bend, a little at a time, while the
+      operator stands clear of the arc the pole will sweep when it releases.
+    </desc>
+
+    <path class="ground-h" d="M10 248h420" />
+    <!-- pinning log -->
+    <path class="wood" d="M244 150h180v44H244z" />
+    <path class="bark" d="M244 150h180v6H244zM244 188h180v6H244z" />
+    <text x="330" y="178" class="quiet" text-anchor="middle">log pinning the tip</text>
+
+    <!-- the bent sapling -->
+    <path d="M96 248C96 150 84 96 150 82c50-10 84 32 108 84" fill="none"
+          stroke="color-mix(in oklab, var(--color-canopy) 72%, var(--color-ink))"
+          stroke-width="11" stroke-linecap="round" />
+
+    <!-- apex -->
+    <circle class="danger" cx="150" cy="82" r="26" fill="none" />
+    <text x="150" y="40" text-anchor="middle">Apex of the bend</text>
+    <text x="150" y="58" text-anchor="middle" class="quiet">maximum load lives here</text>
+
+    <!-- shaving cuts on the outside -->
+    <path class="cut" d="M122 74h-16M128 92h-18M140 106l-16 4" />
+    <text x="14" y="124">Shave here</text>
+    <text x="14" y="142" class="quiet">outside of the bend, a</text>
+    <text x="14" y="158" class="quiet">sliver at a time</text>
+
+    <!-- the arc -->
+    <path class="danger" d="M150 82A150 150 0 0 1 96 224" stroke-dasharray="7 8" />
+    <text x="196" y="230" class="quiet">the arc it sweeps — do not stand in it</text>
+  </svg>
+</Plate>

@@ -1,0 +1,20 @@
+---
+/** A numeric spec with its provenance attached, Rule S-7. Anything that can be
+ *  torqued, gapped, angled or measured carries where it came from, visibly —
+ *  no tooltips (Rule D-3). If it cannot be sourced it does not ship as a
+ *  number: pass `unverified` and it says so in the open and links to /verify/. */
+import { u } from '../lib/url';
+interface Props {
+  /** Where the figure came from: manufacturer manual, OSHA, NWCG, ANSI Z133… */
+  src?: string;
+  unverified?: boolean;
+}
+const { src, unverified = false } = Astro.props;
+---
+<span class="spec"><slot /></span>{
+  unverified ? (
+    <span class="spec-src spec-src--unverified"> [<a href={u('/about/verify/')}>unverified — check your manual</a>]</span>
+  ) : src ? (
+    <span class="spec-src"> [{src}]</span>
+  ) : null
+}

@@ -1,0 +1,11 @@
+---
+/** One failure mode. Rule S-4: no technique ships without what goes wrong and
+ *  what it looks like on the way to going wrong. `tell` is that second half
+ *  and is required — the component will not render without it. */
+interface Props { tell: string }
+const { tell } = Astro.props;
+---
+<li>
+  <span><slot /></span>
+  <span class="tell"><b>The tell:</b> {tell}</span>
+</li>

@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+import { u } from '../lib/url';
+import Masthead from '../components/Masthead.astro';
+import Dock from '../components/Dock.astro';
+import Footer from '../components/Footer.astro';
+import { Font } from 'astro:assets';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Life-safety pages are commercially clean. Rule A-3. */
+  noAffiliate?: boolean;
+}
+const { title, description = site.description } = Astro.props;
+const full = title === site.name ? title : `${title} — ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://kauaisawschool.org');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{full}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="theme-color" content="#efe6d6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14120f" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content={full} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="manifest" href={u('/manifest.webmanifest')} />
+    <link rel="icon" href={u('/icon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={u('/icon-192.png')} />
+    <Font cssVariable="--font-display" preload={[{ style: "normal" }]} />
+    <Font cssVariable="--font-body" preload={[{ style: "normal" }]} />
+    <script is:inline>
+      // Theme before paint. Wrapped: private mode can throw on localStorage.
+      try {
+        var t = localStorage.getItem('saw-theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Masthead />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <Dock />
+    <script is:inline src={u('/register-sw.js')} defer></script>
+  </body>
+</html>

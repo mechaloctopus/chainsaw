@@ -1,0 +1,378 @@
+/* ==========================================================================
+   COMPONENTS
+   --hazard may appear ONLY in this file's .hazard / .stopwork / .hazard-*
+   blocks and in the marked hazard SVG classes. CI enforces this (Rule D-1).
+   ========================================================================== */
+
+/* --- Masthead ----------------------------------------------------------- */
+.masthead {
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+.masthead__in {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: var(--tap);
+  padding-block: 0.5rem;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--tap);
+  margin-right: auto;
+}
+.wordmark span { color: var(--accent); }
+.masthead nav { display: none; gap: 0.25rem; }
+@media (min-width: 62rem) { .masthead nav { display: flex; } }
+.masthead nav a {
+  text-decoration: none;
+  font-size: var(--text-meta);
+  font-weight: 600;
+  padding: 0.5rem 0.7rem;
+  color: var(--text);
+  min-height: var(--tap);
+  display: inline-flex;
+  align-items: center;
+}
+.masthead nav a[aria-current='page'] { box-shadow: inset 0 -3px 0 var(--accent); }
+.masthead nav a:hover { background: var(--surface-inset); }
+
+.toggle {
+  min-width: var(--tap); min-height: var(--tap);
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid var(--line-strong);
+  font-size: var(--text-meta); font-weight: 600;
+  padding-inline: 0.6rem;
+}
+.toggle:hover { background: var(--surface-inset); }
+
+/* --- Bottom dock: one-handed reach, Rule D-4 ---------------------------- */
+.dock {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 50;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: var(--surface-lift);
+  border-top: 2px solid var(--line-strong);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -6px 18px -12px rgb(0 0 0 / 0.45);
+}
+@media (min-width: 48rem) { .dock { display: none; } }
+.dock a {
+  min-height: var(--dock-h);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  text-align: center;
+  line-height: 1.1;
+  padding: 0.35rem 0.25rem;
+}
+.dock a + a { border-left: 1px solid var(--line); }
+.dock a[aria-current='page'] { background: var(--surface-inset); box-shadow: inset 0 3px 0 var(--accent); }
+.dock svg { width: 26px; height: 26px; }
+.dock .dock__hazard { color: var(--hazard); }
+
+/* --- Hazard: breaks the rail and bleeds left. Rule D-1. ----------------- */
+.hazard, .stopwork {
+  margin-left: calc(-1 * (var(--rail-w) + var(--rail-gap) + var(--pad-x)));
+  padding: 0.95rem 1.15rem 1.05rem calc(var(--rail-w) + var(--rail-gap) + var(--pad-x));
+  background: var(--hazard-wash);
+  border-left: 0.5rem solid var(--hazard);
+  max-width: none;
+}
+.hazard > *, .stopwork > * { max-width: var(--measure); }
+.hazard__label, .stopwork__label {
+  display: inline-block;
+  background: var(--hazard);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.5rem 0.18rem;
+  margin-bottom: 0.5rem;
+}
+.hazard p, .stopwork p { font-weight: 600; }
+.hazard > * + *, .stopwork > * + * { margin-top: 0.6rem; }
+
+.stopwork { border-left-width: 0.875rem; }
+.stopwork__body { font-size: var(--text-lead); line-height: 1.45; font-weight: 700; }
+.stopwork__tag {
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--text-quiet);
+  border-top: 1px solid var(--line);
+  padding-top: 0.5rem;
+}
+
+/* --- Procedure / failure modes ------------------------------------------ */
+.block {
+  border-top: 2px solid var(--line-strong);
+  padding-top: 0.9rem;
+}
+.block__kicker {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9375rem;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+.block--fail { border-top-color: var(--accent); }
+.block--fail .block__kicker { color: var(--accent); }
+.failmodes { display: grid; gap: 0.7rem; padding: 0 !important; list-style: none; }
+.failmodes > li {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  gap: 0.1rem 0.5rem;
+  max-width: var(--measure);
+}
+.failmodes > li::before {
+  content: '\2715';
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.62;
+}
+.failmodes .tell {
+  grid-column: 2;
+  font-size: var(--text-meta);
+  color: var(--text-quiet);
+}
+.failmodes .tell b { color: var(--text); font-weight: 700; }
+
+/* --- Checklist ---------------------------------------------------------- */
+.checklist { list-style: none; padding: 0 !important; display: grid; gap: 0 !important; counter-reset: step; }
+.checklist > li { border-bottom: 1px solid var(--line); max-width: none; }
+.checklist > li:first-child { border-top: 1px solid var(--line); }
+.checklist label {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  min-height: var(--tap);
+  padding: 0.8rem 0.25rem;
+  cursor: pointer;
+}
+.checklist input {
+  appearance: none;
+  width: 1.75rem; height: 1.75rem;
+  margin-top: 0.15rem;
+  border: 2px solid var(--line-strong);
+  background: var(--surface-lift);
+  display: grid;
+  place-content: center;
+  flex: none;
+}
+.checklist input::after {
+  content: '';
+  width: 0.95rem; height: 0.55rem;
+  border-left: 3px solid var(--accent-2);
+  border-bottom: 3px solid var(--accent-2);
+  transform: rotate(-45deg) translateY(-0.12rem);
+  opacity: 0;
+}
+.checklist input:checked::after { opacity: 1; }
+.checklist input:checked { border-color: var(--accent-2); }
+.checklist label:hover { background: var(--surface-inset); }
+.checklist .step {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-body);
+}
+.checklist .step::after { content: '. '; }
+.checklist .why { display: block; font-size: var(--text-meta); color: var(--text-quiet); font-weight: 400; margin-top: 0.2rem; }
+.checklist__reset { font-size: var(--text-meta); font-weight: 600; text-decoration: underline; min-height: var(--tap); }
+
+/* --- Field card line ---------------------------------------------------- */
+.fieldline {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+  border-top: 2px solid var(--line-strong);
+  border-bottom: 2px solid var(--line-strong);
+  padding: 0.7rem 0;
+  max-width: none;
+}
+.fieldline__tag {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-quiet);
+}
+.fieldline__text { font-weight: 700; max-width: var(--measure); }
+
+/* --- Provenance marker, Rule S-7 ---------------------------------------- */
+.spec-src {
+  font-size: 0.8em;
+  font-family: var(--font-body);
+  color: var(--text-quiet);
+  white-space: nowrap;
+}
+.spec-src a { color: inherit; }
+.spec-src--unverified { color: var(--accent); font-weight: 700; }
+
+/* --- Module header ------------------------------------------------------ */
+.modhead { padding-top: 1.5rem; }
+.modhead__num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-mega);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: var(--surface-inset);
+  -webkit-text-stroke: 1px var(--line);
+  display: block;
+}
+.modhead__meta {
+  font-size: var(--text-meta);
+  color: var(--text-quiet);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+}
+.modhead__meta > * { display: inline-flex; gap: 0.35rem; align-items: baseline; }
+
+/* --- Module index: numbers hanging off the rail, no card grid ----------- */
+.index { list-style: none; padding: 0 !important; margin: 0; }
+.index > li { max-width: none; }
+.index a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.95rem 0.25rem 0.95rem 0;
+  min-height: var(--tap);
+  text-decoration: none;
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+}
+.index a:hover { background: var(--surface-inset); }
+.index a:hover .index__title { color: var(--accent); }
+.index__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 0.95rem + 1.1vw, 1.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.index__sub { font-size: var(--text-meta); color: var(--text-quiet); grid-column: 1; }
+.index__flag {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--hazard);
+  color: var(--color-ink);
+  padding: 0.2rem 0.4rem;
+  align-self: center;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  padding: 0.75rem 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid var(--text);
+  color: var(--text);
+  background: transparent;
+  text-align: center;
+}
+.btn:hover { background: var(--text); color: var(--surface); }
+.btn--solid { background: var(--text); color: var(--surface); }
+.btn--solid:hover { background: var(--accent); border-color: var(--accent); color: var(--color-pith); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+/* --- Callout (non-hazard aside) ----------------------------------------- */
+.note {
+  background: var(--surface-inset);
+  border-left: 4px solid var(--accent-2);
+  padding: 0.85rem 1rem;
+  font-size: var(--text-meta);
+}
+.note > * { max-width: var(--measure); }
+.note > * + * { margin-top: 0.5rem; }
+.note__label {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+/* --- Footer ------------------------------------------------------------- */
+.sitefoot {
+  border-top: 2px solid var(--line-strong);
+  margin-top: 4rem;
+  padding-block: 2rem 3rem;
+  font-size: var(--text-meta);
+  color: var(--text-quiet);
+}
+.sitefoot a { color: var(--text); }
+.sitefoot h2 {
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.sitefoot__cols { display: grid; gap: 1.75rem; }
+@media (min-width: 48rem) { .sitefoot__cols { grid-template-columns: 2fr 1fr 1fr; gap: 2.5rem; } }
+.sitefoot ul { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
+.sitefoot__legal { border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1.25rem; display: grid; gap: 0.6rem; }
+.sitefoot__legal p { max-width: 74ch; }
+
+/* --- Disclaimer block (Rule S-2) ---------------------------------------- */
+.disclaimer {
+  border: 2px solid var(--line-strong);
+  padding: 1rem 1.1rem;
+  font-size: var(--text-meta);
+  background: var(--surface-lift);
+}
+.disclaimer > * { max-width: var(--measure); }
+.disclaimer > * + * { margin-top: 0.6rem; }
+.disclaimer strong { font-weight: 700; }
+
+/* --- Print: the whole site is a field manual ---------------------------- */
+@media print {
+  .dock, .masthead nav, .toggle, .skip-link, .no-print { display: none !important; }
+  :root { --surface: #fff; --text: #000; --surface-inset: #fff; --surface-lift: #fff; }
+  body { padding: 0; font-size: 11pt; }
+  .railed::before { display: none; }
+  .railed > * { margin-left: 0; }
+  .hazard, .stopwork { margin-left: 0; padding-left: 0.6rem; border-left: 4pt solid #000; background: none; }
+  .hazard__label, .stopwork__label { background: none; color: #000; border: 1pt solid #000; }
+  a { color: #000; }
+  h1, h2, h3 { break-after: avoid; }
+  .block, .fieldline, .checklist > li { break-inside: avoid; }
+}

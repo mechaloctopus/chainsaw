@@ -1,0 +1,218 @@
+/* ==========================================================================
+   BASE — reset, typography, and the rail.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.62;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--dock-h) + env(safe-area-inset-bottom));
+}
+@media (min-width: 48rem) { body { padding-bottom: 0; } }
+
+img, svg, video { max-width: 100%; height: auto; display: block; }
+svg { fill: currentColor; }
+
+/* --- Links ---------------------------------------------------------------
+   Underlines stay on. A tired reader should never have to hunt for a link. */
+a {
+  color: var(--accent-2);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+}
+a:hover { text-decoration-color: currentColor; }
+
+:where(a, button, summary, input, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+
+/* --- Headings ----------------------------------------------------------- */
+h1, h2, h3, h4, .display,
+.wordmark, .btn, .rail-mark, .index__title, .modhead__num,
+.block__kicker, .fieldline__tag, .note__label, .hazard__label, .stopwork__label,
+.dock a, th, .checklist .step {
+  font-family: var(--font-display);
+  /* The width axis is the point: Archivo dialled out to Expanded reads as a
+     stamped machine plate, and stays legible at the 18px floor. */
+  font-stretch: 115%;
+  font-variation-settings: 'wdth' 115;
+}
+
+h1, h2, h3, h4, .display {
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+h1 { font-size: var(--text-h1); line-height: 0.92; }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
+h4 { font-size: var(--text-body); font-weight: 700; }
+
+p, li { max-width: var(--measure); }
+strong, b { font-weight: 700; }
+em { font-style: italic; }
+
+/* Measurements are tabular data, not a stylistic tic. */
+.spec, code, kbd, samp {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+code:not(pre code) {
+  background: var(--surface-inset);
+  padding: 0.08em 0.34em;
+  border-radius: 2px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin-block: calc(var(--flow) * 1.6);
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute; left: var(--pad-x); top: 0;
+  transform: translateY(-120%);
+  z-index: 60;
+  background: var(--text); color: var(--surface);
+  padding: 0.75rem 1rem; font-weight: 700; text-decoration: none;
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* ==========================================================================
+   THE RAIL
+   A continuous rule down the left of every page. Module numbers hang in the
+   gutter to its left. Hazard blocks are the only elements permitted to break
+   through it (Rule D-1, enforced spatially as well as chromatically).
+   ========================================================================== */
+
+.shell {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+  position: relative;
+}
+
+.railed { position: relative; }
+.railed::before {
+  content: '';
+  position: absolute;
+  left: var(--rail-w);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-strong);
+  pointer-events: none;
+}
+.railed > * { margin-left: calc(var(--rail-w) + var(--rail-gap)); }
+
+/* A number or marker hanging in the gutter, right-aligned onto the rule. */
+.rail-mark {
+  position: absolute;
+  left: 0;
+  width: var(--rail-w);
+  padding-right: 0.5rem;
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-meta);
+  line-height: 1;
+  color: var(--text-quiet);
+  font-variant-numeric: tabular-nums;
+  margin-left: 0 !important;
+  user-select: none;
+}
+@media (min-width: 48rem) {
+  .rail-mark { font-size: 1.75rem; letter-spacing: -0.03em; }
+}
+
+/* ==========================================================================
+   FLOW — vertical rhythm for authored content
+   ========================================================================== */
+.flow > * + * { margin-top: var(--flow); }
+.flow > * + :is(h2) { margin-top: calc(var(--flow) * 2.4); }
+.flow > * + :is(h3) { margin-top: calc(var(--flow) * 1.7); }
+.flow > :is(h2, h3) + * { margin-top: calc(var(--flow) * 0.6); }
+
+.flow :is(ul, ol) {
+  list-style-position: outside;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.55rem;
+}
+.flow li::marker { color: var(--accent); font-weight: 700; }
+.flow ol { padding-left: 1.5rem; }
+.flow ol li::marker { font-family: var(--font-mono); font-size: 0.95em; }
+
+.lead {
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  font-size: var(--text-lead);
+  line-height: 1.5;
+}
+
+/* Tables: the only elements allowed to scroll sideways. */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 24rem;
+  font-size: var(--text-meta);
+  text-align: left;
+}
+th, td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  border-bottom-width: 2px;
+  border-bottom-color: var(--line-strong);
+}
+td:first-child { font-weight: 600; }

@@ -1,0 +1,47 @@
+---
+import Plate from './Plate.astro';
+---
+<Plate caption="Three numbers, all three stamped on the bar. Pitch is measured across three rivets and halved. Gauge is the thickness of the drive link that rides in the groove. Drive links are counted, not measured.">
+  <svg viewBox="0 0 440 300" class="dwg" role="img" aria-labelledby="cn-t cn-d">
+    <title id="cn-t">How pitch, gauge and drive link count are measured on a chain</title>
+    <desc id="cn-d">
+      Top: a length of chain in side view. The distance between the centres of three
+      consecutive rivets, divided by two, is the pitch. Middle: an end view of a drive
+      link sitting in the bar groove — its thickness is the gauge. Bottom: the drive links
+      are the tangs on the underside of the chain, and the count is how many there are in
+      the whole loop.
+    </desc>
+
+    <!-- chain side view -->
+    <text x="8" y="20">Pitch — three rivets, divided by two</text>
+    <g transform="translate(20 34)">
+      <path class="metal" d="M0 26h380v20H0z" />
+      <path class="ink" d="M12 46h22l-4 16H16zM92 46h22l-4 16H96zM172 46h22l-4 16h-18zM252 46h22l-4 16h-18zM332 46h22l-4 16h-18z" />
+      <path class="metal" d="M28 4h34q10 0 10 10v12H28zM108 4h34q10 0 10 10v12h-44zM188 4h34q10 0 10 10v12h-44zM268 4h34q10 0 10 10v12h-44z" />
+      <circle cx="24" cy="36" r="5" class="ink" /><circle cx="64" cy="36" r="5" class="ink" />
+      <circle cx="104" cy="36" r="5" class="ink" /><circle cx="144" cy="36" r="5" class="ink" />
+      <circle cx="184" cy="36" r="5" class="ink" /><circle cx="224" cy="36" r="5" class="ink" />
+      <path class="cut" d="M24 84h80M24 78v12M64 78v12M104 78v12" />
+      <text x="112" y="90" class="quiet">measure this, halve it</text>
+    </g>
+
+    <!-- gauge: end view -->
+    <text x="8" y="176">Gauge — drive link thickness in the groove</text>
+    <g transform="translate(40 188)">
+      <path class="metal" d="M0 0h150v70H0z" />
+      <path class="wood-end" d="M62 0h26v44H62z" />
+      <path class="ink" d="M66 4h18v54H66z" />
+      <path class="cut" d="M66 78h18M66 72v12M84 72v12" />
+      <text x="100" y="84" class="quiet">.043 · .050 · .058 · .063</text>
+      <text x="0" y="-4" class="quiet">bar, cut through</text>
+    </g>
+
+    <!-- drive links -->
+    <g transform="translate(250 188)">
+      <text x="0" y="-4" class="quiet">drive links — count every one</text>
+      <path class="metal" d="M0 10h150v16H0z" />
+      <path class="ink" d="M8 26h18l-3 16h-14zM38 26h18l-3 16h-14zM68 26h18l-3 16h-14zM98 26h18l-3 16h-14zM128 26h18l-3 16h-14z" />
+      <text x="0" y="62" class="quiet">e.g. 72 DL</text>
+    </g>
+  </svg>
+</Plate>

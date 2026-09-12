@@ -1,0 +1,22 @@
+---
+/** Species notes. Rule C-3: generic chainsaw content is everywhere; what is
+ *  worth writing down is how the wood on this island behaves. */
+interface Props { name: string; latin?: string; verdict: string }
+const { name, latin, verdict } = Astro.props;
+---
+<div class="species">
+  <h3>{name}{latin && <i> — {latin}</i>}</h3>
+  <p class="species__verdict">{verdict}</p>
+  <div class="flow"><slot /></div>
+</div>
+<style>
+  .species { border-top: 1px solid var(--line); padding-top: 0.85rem; }
+  .species h3 { font-size: var(--text-h3); }
+  .species h3 i { font-family: var(--font-body); font-weight: 400; font-size: 0.85em; color: var(--text-quiet); letter-spacing: 0; }
+  .species__verdict {
+    font-weight: 700;
+    margin: 0.35rem 0 0.5rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+</style>

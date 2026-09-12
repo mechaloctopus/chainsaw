@@ -1,0 +1,66 @@
+---
+import Plate from './Plate.astro';
+---
+<Plate caption="Compression is where the wood is being squeezed; tension is where it is being pulled apart. Cut the compression side first — cut 1 — then finish from the tension side. Get it backwards and the log closes on your bar or splits and drops.">
+  <svg viewBox="0 0 440 420" class="dwg" role="img" aria-labelledby="bind-t bind-d">
+    <title id="bind-t">Three log support cases and the cut order for each</title>
+    <desc id="bind-d">
+      Case one, a log supported at both ends with the middle unsupported: the top is in
+      compression and the underside is in tension, so the first cut comes down from the
+      top about a third of the way, and the second cut comes up from underneath to meet
+      it. Case two, a log supported at one end with the far end hanging: the underside is
+      in compression and the top is in tension, so the first cut goes up from underneath
+      and the second comes down from the top. Case three, a log resting on a high point in
+      the middle: the underside is in tension, so cut the top first and finish from below.
+    </desc>
+
+    <!-- CASE 1: supported both ends -->
+    <g>
+      <text x="8" y="20">1 · Supported both ends, bridging</text>
+      <path class="wood" d="M30 40h380v40H30z" />
+      <path class="bark" d="M30 40h380v6H30zM30 74h380v6H30z" />
+      <path class="ink" d="M30 80h40v22H30zM370 80h40v22h-40z" />
+      <path class="ground-h" d="M10 104h420" />
+      <text x="150" y="36" class="quiet">compression (top)</text>
+      <text x="150" y="98" class="quiet">tension (underside)</text>
+      <path class="cut" d="M220 40v26" />
+      <circle class="danger-fill" cx="220" cy="34" r="11" />
+      <text x="220" y="34" class="onhaz" text-anchor="middle" dy="0.34em">1</text>
+      <path class="cut-2" d="M220 80v-12" />
+      <circle class="ink" cx="220" cy="92" r="11" />
+      <text x="220" y="92" class="num" text-anchor="middle" dy="0.34em">2</text>
+    </g>
+
+    <!-- CASE 2: cantilever -->
+    <g transform="translate(0 140)">
+      <text x="8" y="20">2 · Supported one end, far end hanging</text>
+      <path class="wood" d="M30 40h380v40H30z" />
+      <path class="bark" d="M30 40h380v6H30zM30 74h380v6H30z" />
+      <path class="ink" d="M40 80h46v22H40z" />
+      <path class="ground-h" d="M10 104h150" />
+      <text x="180" y="36" class="quiet">tension (top)</text>
+      <text x="180" y="98" class="quiet">compression (underside)</text>
+      <path class="cut" d="M260 80v-26" />
+      <circle class="danger-fill" cx="260" cy="92" r="11" />
+      <text x="260" y="92" class="onhaz" text-anchor="middle" dy="0.34em">1</text>
+      <path class="cut-2" d="M260 40v14" />
+      <circle class="ink" cx="260" cy="34" r="11" />
+      <text x="260" y="34" class="num" text-anchor="middle" dy="0.34em">2</text>
+    </g>
+
+    <!-- CASE 3: high point -->
+    <g transform="translate(0 280)">
+      <text x="8" y="20">3 · Resting on a high point in the middle</text>
+      <path class="wood" d="M30 44q190-22 380 0v40q-190-22-380 0z" />
+      <path class="ink" d="M196 84h48v26h-48z" />
+      <path class="ground-h" d="M10 112h420" />
+      <text x="60" y="36" class="quiet">tension underneath, both sides of the high point</text>
+      <path class="cut" d="M110 42v28" />
+      <circle class="danger-fill" cx="110" cy="32" r="11" />
+      <text x="110" y="32" class="onhaz" text-anchor="middle" dy="0.34em">1</text>
+      <path class="cut-2" d="M110 80v-12" />
+      <circle class="ink" cx="110" cy="94" r="11" />
+      <text x="110" y="94" class="num" text-anchor="middle" dy="0.34em">2</text>
+    </g>
+  </svg>
+</Plate>

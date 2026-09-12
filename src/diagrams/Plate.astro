@@ -1,0 +1,53 @@
+---
+/** Shared frame for the hand-drawn plates. Rule D-8: native SVG, themed by
+ *  CSS variables, legible at 360px, with every label present in the DOM. */
+interface Props { caption?: string }
+const { caption } = Astro.props;
+---
+<figure class="plate-fig">
+  <div class="plate-box"><slot /></div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style is:global>
+  .plate-fig { margin: 0; }
+  .plate-box {
+    background: var(--surface-lift);
+    border: 1px solid var(--line);
+    padding: 0.5rem;
+  }
+  .plate-fig svg { width: 100%; height: auto; display: block; }
+  .plate-fig figcaption {
+    font-size: var(--text-meta);
+    color: var(--text-quiet);
+    margin-top: 0.5rem;
+    max-width: var(--measure);
+  }
+  /* Shared plate ink. */
+  .dwg .wood { fill: color-mix(in oklab, var(--color-pith) 74%, var(--color-dirt)); }
+  .dwg .wood-end { fill: color-mix(in oklab, var(--color-pith) 92%, var(--color-dirt)); }
+  .dwg .bark { fill: color-mix(in oklab, var(--color-dirt) 58%, var(--color-ink)); }
+  .dwg .metal { fill: var(--color-steel); }
+  .dwg .ink { fill: var(--text); }
+  .dwg .ground-h { stroke: var(--line-strong); stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+  .dwg .rule { stroke: var(--line-strong); stroke-width: 1.5; fill: none; }
+  .dwg .arrow { stroke: var(--text); stroke-width: 3; fill: none; }
+  .dwg .cut { stroke: var(--accent); stroke-width: 4; fill: none; stroke-linecap: round; }
+  .dwg .cut-2 { stroke: var(--accent-2); stroke-width: 4; fill: none; stroke-linecap: round; }
+  .dwg .danger { stroke: var(--color-hazard); stroke-width: 4; fill: none; }
+  .dwg .danger-fill { fill: var(--color-hazard); }
+  .dwg text {
+    fill: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .dwg .num {
+    fill: var(--color-pith);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+  }
+  .dwg .quiet { fill: var(--text-quiet); font-weight: 400; font-size: 13px; }
+  .dwg .onhaz { fill: var(--color-ink); font-weight: 800; }
+</style>

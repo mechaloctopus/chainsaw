@@ -1,0 +1,119 @@
+---
+import Base from './Base.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { u } from '../lib/url';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'modules'>;
+  prev?: { slug: string; num: string; title: string };
+  next?: { slug: string; num: string; title: string };
+}
+const { entry, prev, next } = Astro.props;
+const d = entry.data;
+---
+<Base title={`${d.num} · ${d.title}`} description={d.objective} noAffiliate={d.lifeSafety}>
+  <div class="shell">
+    <p class="crumb no-print"><a href={u('/modules/')}>← All modules</a></p>
+  </div>
+
+  <article class="shell railed flow modhead">
+    <span class="modhead__num" aria-hidden="true">{d.num}</span>
+    <h1>{d.title}</h1>
+    <p class="lead">{d.objective}</p>
+    <p class="modhead__meta">
+      <span>Module {d.num}</span>
+      <span>Updated {d.updated}</span>
+      <span>{d.reviewed
+        ? 'Reviewed by a second sawyer'
+        : 'Not yet reviewed by a second sawyer'}</span>
+      {d.lifeSafety && <span>Life-safety page — no product links</span>}
+    </p>
+
+    <slot />
+
+    {d.stopWork.length > 0 && (
+      <aside class="stopwork" aria-labelledby="sw-h">
+        <p class="stopwork__label" id="sw-h">Stop work on this module</p>
+        <ul class="stopwork__list">
+          {d.stopWork.map((t) => <li>{t}</li>)}
+        </ul>
+        <p class="stopwork__tag">
+          Any one of these is enough on its own. You do not need permission to stop.
+        </p>
+      </aside>
+    )}
+
+    <section class="block">
+      <h2 class="block__kicker">On the field card</h2>
+      <ul class="cardlines">
+        {d.fieldCard.map((line) => <li>{line}</li>)}
+      </ul>
+      <p class="no-print" style="margin-top:.8rem;">
+        <a href={u('/field-card/')}>Print the whole card</a>
+      </p>
+    </section>
+
+    <Disclaimer />
+
+    <nav class="modnav no-print" aria-label="Modules">
+      {prev ? (
+        <a href={u(`/modules/${prev.slug}/`)}>
+          <span>Previous</span>
+          <b>{prev.num} {prev.title}</b>
+        </a>
+      ) : <span></span>}
+      {next && (
+        <a href={u(`/modules/${next.slug}/`)} class="modnav__next">
+          <span>Next</span>
+          <b>{next.num} {next.title}</b>
+        </a>
+      )}
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .crumb { padding-top: 1rem; font-size: var(--text-meta); font-weight: 600; }
+  .crumb a { text-decoration: none; min-height: var(--tap); display: inline-flex; align-items: center; }
+  .crumb a:hover { text-decoration: underline; }
+  .stopwork__list { list-style: none; padding: 0 !important; display: grid; gap: 0.55rem; }
+  .stopwork__list li {
+    display: grid;
+    grid-template-columns: 1.1rem 1fr;
+    gap: 0.6rem;
+    font-weight: 700;
+    font-size: var(--text-lead);
+    line-height: 1.4;
+  }
+  .stopwork__list li::before { content: '\2013'; color: var(--hazard); }
+  .cardlines { list-style: none; padding: 0 !important; display: grid; gap: 0; }
+  .cardlines li {
+    border-bottom: 1px solid var(--line);
+    padding: 0.55rem 0;
+    font-weight: 700;
+    max-width: var(--measure);
+  }
+  .cardlines li:first-child { border-top: 1px solid var(--line); }
+  .modnav {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2.5rem !important;
+    border-top: 2px solid var(--line-strong);
+    padding-top: 1.25rem;
+  }
+  @media (min-width: 40rem) { .modnav { grid-template-columns: 1fr 1fr; } }
+  .modnav a {
+    display: grid;
+    gap: 0.2rem;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 0.8rem 0.9rem;
+    min-height: var(--tap);
+  }
+  .modnav a:hover { background: var(--surface-inset); border-color: var(--line-strong); }
+  .modnav span { font-size: var(--text-meta); color: var(--text-quiet); }
+  .modnav b { font-family: var(--font-display); font-weight: 800; line-height: 1.1; }
+  .modnav__next { text-align: right; }
+</style>

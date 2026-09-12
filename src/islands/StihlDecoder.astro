@@ -1,0 +1,182 @@
+---
+/** Interactive #6 — STIHL model decoder.
+ *  Zero-JS baseline (T-4): the prefix / band / suffix tables below are the real
+ *  content and are fully readable with the input dead. The field is a shortcut,
+ *  not the source. */
+import { prefixes, bands, suffixes } from '../data/stihl';
+const sawPrefixes = prefixes.filter((p) => p.saw);
+const otherPrefixes = prefixes.filter((p) => !p.saw);
+---
+<div class="decoder" data-decoder>
+  <form class="decoder__form" data-decoder-form autocomplete="off">
+    <label class="decoder__label" for="stihl-input">Type a model number</label>
+    <div class="decoder__row">
+      <input
+        id="stihl-input"
+        name="model"
+        type="text"
+        inputmode="text"
+        spellcheck="false"
+        placeholder="MS 261 C-M"
+        aria-describedby="stihl-hint"
+      />
+      <button class="btn btn--solid" type="submit">Decode</button>
+    </div>
+    <p class="decoder__hint" id="stihl-hint">
+      Works on anything stamped on the case: <code>MS250</code>, <code>MS 261 C-M</code>,
+      <code>MSA 220 C-B</code>, <code>MS 500i</code>.
+    </p>
+  </form>
+
+  <output class="decoder__out" data-decoder-out hidden aria-live="polite"></output>
+
+  <div class="decoder__tables">
+    <h3 id="prefixes">What the letters in front mean</h3>
+    <div class="table-scroll">
+      <table>
+        <caption class="sr-only">STIHL chainsaw prefixes</caption>
+        <thead><tr><th scope="col">Code</th><th scope="col">What it is</th><th scope="col">Notes</th></tr></thead>
+        <tbody>
+          {sawPrefixes.map((p) => (
+            <tr><td><span class="spec">{p.code}</span></td><td>{p.label}</td><td>{p.note}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="decoder__aside">
+      Codes that are <em>not</em> chainsaws, because people do mix them up:
+      {otherPrefixes.map((p, i) => (
+        <span>{i > 0 ? ', ' : ' '}<span class="spec">{p.code}</span> {p.label.replace('Not a chainsaw — ', '')}</span>
+      ))}.
+    </p>
+
+    <h3 id="numbers">What the number means</h3>
+    <p>
+      Broadly, a bigger number is a bigger engine and more saw. The bands blur at the
+      edges and always have.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <caption class="sr-only">STIHL model number bands</caption>
+        <thead><tr><th scope="col">Range</th><th scope="col">Class</th><th scope="col">What that means for storm work</th></tr></thead>
+        <tbody>
+          {bands.map((b) => (
+            <tr>
+              <td><span class="spec">{b.min === 0 ? '≤ 260' : b.max > 999 ? '500 and up' : `${b.min}–${b.max}`}</span></td>
+              <td>{b.label}</td>
+              <td>{b.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="suffixes">What the letters after mean</h3>
+    <div class="table-scroll">
+      <table>
+        <caption class="sr-only">STIHL suffix letters</caption>
+        <thead><tr><th scope="col">Letter</th><th scope="col">Meaning</th><th scope="col">Notes</th></tr></thead>
+        <tbody>
+          {suffixes.map((s) => (
+            <tr><td><span class="spec">{s.code}</span></td><td>{s.label}</td><td>{s.note}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { decodeStihl } from '../data/stihl';
+
+  const esc = (s: string) =>
+    s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  document.querySelectorAll<HTMLElement>('[data-decoder]').forEach((root) => {
+    const form = root.querySelector<HTMLFormElement>('[data-decoder-form]')!;
+    const input = form.querySelector<HTMLInputElement>('input')!;
+    const out = root.querySelector<HTMLElement>('[data-decoder-out]')!;
+
+    const render = () => {
+      const d = decodeStihl(input.value);
+      if (!input.value.trim()) {
+        out.hidden = true;
+        out.innerHTML = '';
+        return;
+      }
+      const rows: string[] = [];
+      if (d.prefix) rows.push(`<dt>${esc(d.prefix.code)}</dt><dd><b>${esc(d.prefix.label)}</b>${d.prefix.note ? ' — ' + esc(d.prefix.note) : ''}</dd>`);
+      if (d.number !== undefined && d.band)
+        rows.push(`<dt>${d.number}</dt><dd><b>${esc(d.band.label)}</b> — ${esc(d.band.note)}</dd>`);
+      for (const l of d.letters) rows.push(`<dt>${esc(l.code)}</dt><dd><b>${esc(l.label)}</b> — ${esc(l.note)}</dd>`);
+      for (const u of d.unknownLetters)
+        rows.push(`<dt>${esc(u)}</dt><dd>Not a letter this decoder knows. Check the manual for that model.</dd>`);
+
+      const notes = d.messages.map((m) => `<li>${esc(m)}</li>`).join('');
+      out.innerHTML = rows.length
+        ? `<h3 class="decoder__outhead">${esc(d.input)}</h3><dl class="decoder__dl">${rows.join('')}</dl>` +
+          (notes ? `<ul class="decoder__notes">${notes}</ul>` : '')
+        : `<p class="decoder__outhead">Nothing to decode there. Try <span class="spec">MS 261 C-M</span>.</p>` +
+          (notes ? `<ul class="decoder__notes">${notes}</ul>` : '');
+      out.hidden = false;
+    };
+
+    form.addEventListener('submit', (e) => { e.preventDefault(); render(); });
+    input.addEventListener('input', render);
+    // Deep links: /tools/stihl-decoder/?m=MS261
+    const q = new URLSearchParams(location.search).get('m');
+    if (q) { input.value = q; render(); }
+  });
+</script>
+
+<style>
+  .decoder { display: grid; gap: 1.25rem; }
+  .decoder__form { display: grid; gap: 0.4rem; }
+  .decoder__label {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.0625rem;
+  }
+  .decoder__row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .decoder__row input {
+    flex: 1 1 11rem;
+    min-height: var(--tap);
+    padding: 0.6rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-lead);
+    background: var(--surface-lift);
+    border: 2px solid var(--line-strong);
+    text-transform: uppercase;
+  }
+  .decoder__hint { font-size: var(--text-meta); color: var(--text-quiet); }
+  .decoder__aside { font-size: var(--text-meta); color: var(--text-quiet); }
+  .decoder__out {
+    display: block;
+    border: 2px solid var(--text);
+    background: var(--surface-lift);
+    padding: 0.9rem 1rem;
+  }
+  .decoder__outhead { font-family: var(--font-display); font-weight: 800; font-size: var(--text-h3); margin-bottom: 0.6rem; }
+  .decoder__dl { display: grid; gap: 0; margin: 0; }
+  .decoder__dl dt {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    border-top: 1px solid var(--line);
+    padding-top: 0.55rem;
+  }
+  .decoder__dl dd { margin: 0 0 0.55rem; max-width: var(--measure); }
+  .decoder__notes {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.6rem;
+    border-top: 1px solid var(--line);
+    padding-top: 0.6rem;
+    display: grid;
+    gap: 0.4rem;
+    font-size: var(--text-meta);
+    color: var(--text-quiet);
+  }
+  .decoder__tables { display: grid; gap: 0.85rem; }
+  .decoder__tables h3 { margin-top: 0.75rem; }
+</style>

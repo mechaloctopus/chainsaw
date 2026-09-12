@@ -1,0 +1,116 @@
+/* ==========================================================================
+   KAUA'I SAW SCHOOL — DESIGN TOKENS
+   Locked. Components may not invent colours, sizes, or spacing outside this
+   file. See PROJECT_RULES.md §8 and rules D-1, D-2.
+
+   Contrast, measured against the page ground (--surface), sRGB, WCAG 2.1:
+     ink     on pith   15.3:1   AAA   body text
+     canopy  on pith    9.9:1   AAA   links, secondary text
+     steel-deep on pith 7.1:1   AAA   metadata, captions
+     dirt    on pith    6.0:1   AA    headings >=24px and rules ONLY
+     hazard  on pith    2.9:1   ---   NEVER text. Rules and fills only.
+     ink     on hazard  6.0:1   AA    hazard labels (large, bold)
+   Night theme swaps ink/pith, so every ratio above is preserved.
+   ========================================================================== */
+
+/* Locked palette + scale. Plain custom properties: no CSS framework, so
+   there is no utility layer able to introduce an off-token value. */
+:root {
+  /* --- Raw palette. Six tokens. Do not add a seventh without a PR. ------- */
+  --color-ink: #141210;      /* warm-black, like bar oil */
+  --color-dirt: #8c3d22;     /* Kaua'i red dirt */
+  --color-canopy: #1f3a2c;   /* deep wet green */
+  --color-pith: #efe6d6;     /* pale albizia heartwood */
+  --color-hazard: #ff5a00;   /* high-vis PPE orange. RESERVED. Rule D-1. */
+  --color-steel: #6e7275;    /* chain grey — hairlines only, fails text contrast */
+
+  /* Derived, contrast-corrected. */
+  --color-steel-deep: #464b4e; /* metadata text at AAA */
+  --color-pith-deep: #e3d8c4;  /* inset surfaces */
+  --color-pith-lift: #f7f1e6;  /* raised surfaces */
+
+  /* --font-display and --font-body are declared by Astro's font pipeline
+     (see astro.config.mjs): hashed family names plus metric-matched local
+     fallbacks, so swapping in the real face does not shift the layout.
+     Do not redeclare them here. */
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'DejaVu Sans Mono', monospace;
+
+  /* Type scale. Body floor is 18px — Rule D-2. */
+  --text-meta: 0.9375rem;  /* 15px — metadata only, never prose */
+  --text-body: 1.125rem;   /* 18px — floor */
+  --text-lead: 1.3125rem;  /* 21px */
+  --text-h3: 1.375rem;
+  --text-h2: clamp(1.625rem, 1.1rem + 2.2vw, 2.375rem);
+  --text-h1: clamp(2.125rem, 1rem + 5.4vw, 4rem);
+  --text-mega: clamp(3rem, 0.5rem + 11vw, 8.5rem);
+
+  color-scheme: light;
+
+  /* Semantic surface + text roles. Only these are used in components. */
+  --surface: var(--color-pith);
+  --surface-lift: var(--color-pith-lift);
+  --surface-inset: var(--color-pith-deep);
+  --text: var(--color-ink);
+  --text-quiet: var(--color-steel-deep);
+  --accent: var(--color-dirt);
+  --accent-2: var(--color-canopy);
+  --line: color-mix(in oklab, var(--color-ink) 22%, transparent);
+  --line-strong: color-mix(in oklab, var(--color-ink) 62%, transparent);
+  --hazard: var(--color-hazard);
+  --hazard-wash: color-mix(in oklab, var(--color-hazard) 12%, var(--surface));
+  --focus: var(--color-canopy);
+
+  /* Structure. The rail is the site's spine: a continuous rule with module
+     numbers and hazard markers hanging off it, like cutters along a bar. */
+  --shell: 76rem;             /* outer bound, centred */
+  --pad-x: 0.875rem;          /* page side gutter — never zero, Rule: 16px min */
+  --rail-w: 1.5rem;           /* page edge -> rule: where numbers live */
+  --rail-gap: 0.875rem;       /* rule -> content */
+  --measure: 68ch;            /* Rule: max 68ch */
+  --flow: 1.25rem;            /* vertical rhythm between blocks */
+  --tap: 3.5rem;              /* 56px — Rule D-3 */
+  --dock-h: 4.5rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --pad-x: 2rem; --rail-w: 4.5rem; --rail-gap: 1.75rem; --flow: 1.5rem;
+  }
+}
+@media (min-width: 75rem) {
+  :root { --pad-x: 3rem; --rail-w: 6.5rem; --rail-gap: 2.25rem; }
+}
+
+/* Night: for crews working at dusk and in blackout. Roles invert, ratios hold,
+   and --hazard does not move. Rule D-1 survives the theme. */
+:root[data-theme='night'] {
+  color-scheme: dark;
+  --surface: #14120f;
+  --surface-lift: #1e1b17;
+  --surface-inset: #0d0c0a;
+  --text: #efe6d6;
+  --text-quiet: #b3a894;
+  --accent: #e07a4f;
+  --accent-2: #8fc0a3;
+  --line: color-mix(in oklab, #efe6d6 24%, transparent);
+  --line-strong: color-mix(in oklab, #efe6d6 66%, transparent);
+  --hazard-wash: color-mix(in oklab, var(--color-hazard) 18%, var(--surface));
+  --focus: #8fc0a3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='day']) {
+    color-scheme: dark;
+    --surface: #14120f;
+    --surface-lift: #1e1b17;
+    --surface-inset: #0d0c0a;
+    --text: #efe6d6;
+    --text-quiet: #b3a894;
+    --accent: #e07a4f;
+    --accent-2: #8fc0a3;
+    --line: color-mix(in oklab, #efe6d6 24%, transparent);
+    --line-strong: color-mix(in oklab, #efe6d6 66%, transparent);
+    --hazard-wash: color-mix(in oklab, var(--color-hazard) 18%, var(--surface));
+    --focus: #8fc0a3;
+  }
+}

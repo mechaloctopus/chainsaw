@@ -1,0 +1,62 @@
+---
+/** Numbers, in the order you call them. One source of truth (src/data/site.ts)
+ *  so a wrong digit can only ever be wrong in one place. */
+import { contacts, LINE_CLEARANCE_FT } from '../data/site';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+<div class="contacts">
+  <ol class="contacts__list">
+    <li>
+      <a href="tel:911"><b>911</b></a>
+      <span>First, always. Downed line, injury, fire.</span>
+    </li>
+    <li>
+      <a href={`tel:${contacts.kiuc.tel}`}><b>808-246-4300</b></a>
+      <span>KIUC — Kaua‘i Island Utility Cooperative. Report the line and where it is.</span>
+    </li>
+    <li>
+      <a href={`tel:${contacts.oneCall.tel}`}><b>811</b></a>
+      <span>Hawai‘i One Call, before any digging near utilities. Also 866-423-7287.</span>
+    </li>
+  </ol>
+  {!compact && (
+    <p class="contacts__note">
+      Stay {LINE_CLEARANCE_FT} feet back while you make the call. Give a landmark and a
+      mile marker if you have one — an address is often useless in a debris field.
+    </p>
+  )}
+</div>
+
+<style>
+  .contacts {
+    border: 2px solid var(--line-strong);
+    background: var(--surface-lift);
+    padding: 0.9rem 1rem;
+  }
+  .contacts__list { list-style: none; padding: 0 !important; margin: 0; display: grid; gap: 0; }
+  .contacts__list li {
+    display: grid;
+    gap: 0.1rem 0.9rem;
+    padding: 0.6rem 0;
+    max-width: none;
+  }
+  .contacts__list li + li { border-top: 1px solid var(--line); }
+  .contacts__list a {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--text);
+    min-height: var(--tap);
+    display: inline-flex;
+    align-items: center;
+    letter-spacing: -0.01em;
+  }
+  .contacts__list a:hover { color: var(--accent); }
+  .contacts__list span { font-size: var(--text-meta); color: var(--text-quiet); }
+  .contacts__note { margin-top: 0.7rem; font-size: var(--text-meta); font-weight: 600; }
+  @media (min-width: 30rem) {
+    .contacts__list li { grid-template-columns: 9.5rem 1fr; align-items: center; }
+  }
+</style>

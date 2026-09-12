@@ -1,0 +1,54 @@
+---
+import { site, contacts, LINE_CLEARANCE_FT } from '../data/site';
+import { u } from '../lib/url';
+const year = new Date().getFullYear();
+---
+<footer class="sitefoot">
+  <div class="shell">
+    <div class="sitefoot__cols">
+      <div>
+        <h2>If a line is down</h2>
+        <p style="color:var(--text); font-weight:700; max-width:38ch;">
+          Stay {LINE_CLEARANCE_FT} feet back. Call <a href="tel:911">911</a>, then
+          KIUC at <a href={`tel:${contacts.kiuc.tel}`}>808-246-4300</a>. Assume it is energized.
+        </p>
+        <p style="margin-top:.6rem;"><a href={u('/modules/12-downed-power-lines/')}>Read the power line module</a></p>
+      </div>
+      <div>
+        <h2>Start here</h2>
+        <ul>
+          <li><a href={u('/modules/00-before-you-touch-a-saw/')}>Before you touch a saw</a></li>
+          <li><a href={u('/modules/')}>All modules</a></li>
+          <li><a href={u('/field-card/')}>Printable field card</a></li>
+          <li><a href={u('/tools/')}>Tools &amp; decoders</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>This site</h2>
+        <ul>
+          <li><a href={u('/about/')}>What this is &amp; isn’t</a></li>
+          <li><a href={u('/about/disclaimer/')}>Disclaimer &amp; terms</a></li>
+          <li><a href={u('/about/editorial-policy/')}>Editorial &amp; affiliate policy</a></li>
+          <li><a href={u('/about/verify/')}>Unverified specs</a></li>
+          <li><a href={site.repo}>Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sitefoot__legal">
+      <p>
+        <strong>This site does not train, qualify, or certify anyone.</strong> It is written
+        reference material. Reading it is not experience. Get hands-on instruction from a
+        working sawyer, and follow your employer’s or agency’s rules over anything here.
+      </p>
+      <p>
+        Content © {year} {site.name}, licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC&nbsp;BY&nbsp;4.0</a>.
+        Code licensed MIT. Fork it for your island.
+      </p>
+      <p>
+        STIHL and ECHO are trademarks of their respective owners, used here only to
+        describe real products. No endorsement, sponsorship, or affiliation.
+      </p>
+    </div>
+  </div>
+</footer>

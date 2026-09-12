@@ -1,0 +1,17 @@
+---
+/** One step of a checklist. `why` is not decoration — a step you don't
+ *  understand is a step you skip when you're tired. */
+interface Props { n?: number | string; why?: string; id?: string }
+const { n, why, id } = Astro.props;
+const value = id ?? (n !== undefined ? String(n) : Math.random().toString(36).slice(2));
+---
+<li>
+  <label>
+    <input type="checkbox" value={value} />
+    <span>
+      {n !== undefined && <span class="step">{n}</span>}
+      <slot />
+      {why && <span class="why">{why}</span>}
+    </span>
+  </label>
+</li>
