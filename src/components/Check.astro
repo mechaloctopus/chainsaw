@@ -8,10 +8,10 @@ const value = id ?? (n !== undefined ? String(n) : Math.random().toString(36).sl
 <li>
   <label>
     <input type="checkbox" value={value} />
-    <span>
-      {n !== undefined && <span class="step">{n}</span>}
+    {n !== undefined && <span class="step">{n}</span>}
+    <div class="check__body">
       <slot />
       {why && <span class="why">{why}</span>}
-    </span>
+    </div>
   </label>
 </li>

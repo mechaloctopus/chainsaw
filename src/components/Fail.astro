@@ -6,6 +6,6 @@ interface Props { tell: string }
 const { tell } = Astro.props;
 ---
 <li>
-  <span><slot /></span>
-  <span class="tell"><b>The tell:</b> {tell}</span>
+  <div class="failmodes__what"><slot /></div>
+  <div class="tell"><b>The tell:</b> {tell}</div>
 </li>

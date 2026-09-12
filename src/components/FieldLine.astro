@@ -1,9 +1,12 @@
 ---
 /** The one line from this module that ends up on the printed field card (C-4).
  *  Authored inline so it sits in context; the canonical list lives in the
- *  module's frontmatter and is what /field-card/ prints. */
+ *  module's frontmatter and is what /field-card/ prints.
+ *
+ *  A <div> rather than a <p>: MDX wraps slotted prose in a paragraph, and a
+ *  paragraph inside a paragraph gets hoisted straight back out by the parser. */
 ---
-<p class="fieldline">
+<div class="fieldline">
   <span class="fieldline__tag">Field card</span>
-  <span class="fieldline__text"><slot /></span>
-</p>
+  <div class="fieldline__text"><slot /></div>
+</div>

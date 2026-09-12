@@ -97,7 +97,7 @@
   padding: 0.95rem 1.15rem 1.05rem calc(var(--rail-w) + var(--rail-gap) + var(--pad-x));
   background: var(--hazard-wash);
   border-left: 0.5rem solid var(--hazard);
-  max-width: none;
+  max-width: calc(var(--measure) + var(--rail-w) + var(--rail-gap) + var(--pad-x) + 3rem);
 }
 .hazard > *, .stopwork > * { max-width: var(--measure); }
 .hazard__label, .stopwork__label {
@@ -107,7 +107,7 @@
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 0.875rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
   padding: 0.22rem 0.5rem 0.18rem;
   margin-bottom: 0.5rem;
@@ -152,6 +152,7 @@
   color: var(--accent);
   line-height: 1.62;
 }
+.failmodes__what > p { display: inline; }
 .failmodes .tell {
   grid-column: 2;
   font-size: var(--text-meta);
@@ -165,13 +166,15 @@
 .checklist > li:first-child { border-top: 1px solid var(--line); }
 .checklist label {
   display: grid;
-  grid-template-columns: 2.25rem 1fr;
-  gap: 0.75rem;
+  grid-template-columns: 2.25rem auto 1fr;
+  gap: 0.2rem 0.7rem;
   align-items: start;
   min-height: var(--tap);
   padding: 0.8rem 0.25rem;
   cursor: pointer;
 }
+/* Steps without a number span both remaining columns. */
+.checklist label > .check__body:nth-child(2) { grid-column: 2 / -1; }
 .checklist input {
   appearance: none;
   width: 1.75rem; height: 1.75rem;
@@ -197,8 +200,11 @@
   font-family: var(--font-display);
   font-weight: 800;
   font-size: var(--text-body);
+  line-height: 1.62;
+  font-variant-numeric: tabular-nums;
 }
-.checklist .step::after { content: '. '; }
+.checklist .step::after { content: '.'; }
+.checklist .check__body > p { display: inline; }
 .checklist .why { display: block; font-size: var(--text-meta); color: var(--text-quiet); font-weight: 400; margin-top: 0.2rem; }
 .checklist__reset { font-size: var(--text-meta); font-weight: 600; text-decoration: underline; min-height: var(--tap); }
 
@@ -215,13 +221,12 @@
 }
 .fieldline__tag {
   font-family: var(--font-display);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--text-quiet);
 }
 .fieldline__text { font-weight: 700; max-width: var(--measure); }
+.fieldline__text > p { display: inline; }
 
 /* --- Provenance marker, Rule S-7 ---------------------------------------- */
 .spec-src {
@@ -323,9 +328,7 @@
 .note__label {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.9375rem;
   color: var(--accent-2);
   display: block;
   margin-bottom: 0.3rem;
@@ -341,9 +344,7 @@
 }
 .sitefoot a { color: var(--text); }
 .sitefoot h2 {
-  font-size: 0.9375rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 1rem;
   color: var(--text);
   margin-bottom: 0.5rem;
 }

@@ -94,15 +94,30 @@ const refs = (await getCollection('reference')).sort((a, b) => a.data.order - b.
       search: (q: string) => Promise<{ results: Array<{ data: () => Promise<any> }> }>;
     };
     let pf: Pagefind | null = null;
+    let loading: Promise<Pagefind> | null = null;
     let seq = 0;
 
-    const load = async () => {
-      if (pf) return pf;
+    // The index is fetched on the first keystroke, not on page load. The
+    // loader is an unbundled file in public/ — see the comment in it.
+    const load = () => {
+      if (pf) return Promise.resolve(pf);
+      if (loading) return loading;
       const base = document.documentElement.dataset.base || '/';
-      // Vite must not try to resolve this at build time: it only exists after
-      // `pagefind` runs over the built output.
-      pf = (await import(/* @vite-ignore */ `${base}_pagefind/pagefind.js`)) as Pagefind;
-      return pf;
+      loading = new Promise<Pagefind>((resolve, reject) => {
+        const done = () => {
+          const mod = (window as unknown as { __pagefind?: Pagefind }).__pagefind;
+          mod ? ((pf = mod), resolve(mod)) : reject(new Error('pagefind unavailable'));
+        };
+        window.addEventListener('pagefind:ready', done, { once: true });
+        window.addEventListener('pagefind:failed', () => reject(new Error('pagefind failed')), { once: true });
+        const tag = document.createElement('script');
+        tag.type = 'module';
+        tag.src = base + 'pagefind-loader.js';
+        tag.onerror = () => reject(new Error('pagefind loader missing'));
+        document.head.appendChild(tag);
+        setTimeout(() => reject(new Error('pagefind timed out')), 8000);
+      });
+      return loading;
     };
 
     const esc = (s: string) =>
