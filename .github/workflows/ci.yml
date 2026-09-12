@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build and check the rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Chrome for the a11y and Lighthouse gates
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Project rules
+        # D-1 hazard token, S-1 plain-text life safety, S-2 disclaimers,
+        # S-4 failure modes, A-3 clean life-safety pages, L-2 asset licenses,
+        # T-5 no third-party requests, T-7 text equivalents.
+        run: npm run lint:rules
+
+      - name: Internal links
+        run: npm run test:links
+
+      - name: Performance budget
+        run: npm run test:budget
+
+      - name: Serve the built site
+        run: |
+          npm run serve &
+          npx --yes wait-on http://localhost:4321/ --timeout 60000
+
+      - name: Accessibility (axe, 18px floor, 56px targets)
+        run: npm run test:a11y
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+
+      - name: Lighthouse
+        run: node scripts/lighthouse.mjs
+        env:
+          LH_MIN: 95
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+
+      - name: Upload the built site
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7

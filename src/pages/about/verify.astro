@@ -25,7 +25,7 @@ const done = verifyItems.filter((v) => v.status === 'verified');
     </p>
 
     <h2>Open — {open.length} items</h2>
-    <div class="table-scroll">
+    <div class="table-scroll" tabindex="0" role="group" aria-label="Table, scrolls sideways">
       <table>
         <caption class="sr-only">Unverified specifications and their primary sources</caption>
         <thead>
@@ -42,7 +42,7 @@ const done = verifyItems.filter((v) => v.status === 'verified');
     {done.length > 0 && (
       <>
         <h2>Verified</h2>
-        <div class="table-scroll">
+        <div class="table-scroll" tabindex="0" role="group" aria-label="Table, scrolls sideways">
           <table>
             <thead><tr><th scope="col">What</th><th scope="col">Where</th><th scope="col">Source</th></tr></thead>
             <tbody>{done.map((v) => <tr><td>{v.what}</td><td>{v.where}</td><td>{v.source}</td></tr>)}</tbody>

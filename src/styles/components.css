@@ -31,7 +31,8 @@
   min-height: var(--tap);
   margin-right: auto;
 }
-.wordmark span { color: var(--accent); }
+/* Darkened from --accent so the wordmark clears 7:1 as well (D-2). */
+.wordmark span { color: color-mix(in oklab, var(--accent) 78%, var(--color-ink)); }
 .masthead nav { display: none; gap: 0.25rem; }
 @media (min-width: 62rem) { .masthead nav { display: flex; } }
 .masthead nav a {

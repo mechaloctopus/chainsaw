@@ -66,6 +66,11 @@ const stops = [
       <a class="btn" href={u('/field-card.pdf')}>Download the PDF</a>
     </div>
     <p class="fc-note">
+      Two sides: the emergency numbers, the pre-start check and the stop-work list on the
+      front, one line from every module and a blank crew block on the back. Print
+      double-sided and laminate it.
+    </p>
+    <p class="fc-note">
       Printed type on this card is smaller than the 18px floor the rest of the site holds
       to. That is deliberate: a laminated card is read at arm's length in your hand, not
       at phone distance in glare. Everything safety-critical on it is set in bold.
@@ -130,7 +135,7 @@ const stops = [
       </ul>
     </section>
 
-    <section class="card__box">
+    <section class="card__box card__break">
       <h3>One line from every module</h3>
       <ul class="card__lines">
         {lines.map((l) => (
@@ -225,6 +230,9 @@ const stops = [
     .card__lines { grid-template-columns: 1fr 1fr; column-gap: 4mm; }
     .card__box--hz { border-left: 1.2mm solid #000; }
     .card__head h2 { font-size: 11pt; }
-    .sitefoot, .masthead { display: none !important; }
+    .card__break { break-before: page; }
+    :global(.sitefoot),
+    :global(.masthead),
+    :global(.crumb) { display: none !important; }
   }
 </style>

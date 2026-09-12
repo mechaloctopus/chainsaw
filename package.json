@@ -3,14 +3,14 @@
   "private": true,
   "type": "module",
   "version": "0.1.0",
-  "description": "Kaua'i Saw School — offline-first chainsaw safety training for storm debris volunteers.",
+  "description": "Kaua'i Saw School \u2014 offline-first chainsaw safety training for storm debris volunteers.",
   "license": "MIT",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist --output-subdir _pagefind && node scripts/pwa.mjs",
+    "build": "astro build && pagefind --site dist --output-subdir _pagefind && node scripts/rebase.mjs && node scripts/pwa.mjs",
     "preview": "astro preview",
     "serve": "node scripts/serve.mjs",
     "check": "astro check",
@@ -20,9 +20,11 @@
     "test:a11y": "node scripts/a11y.mjs",
     "test:budget": "node scripts/budget.mjs",
     "test:links": "node scripts/links.mjs",
-    "verify": "npm run lint:rules && npm run test:links && npm run test:budget"
+    "verify": "npm run lint:rules && npm run test:links && npm run test:budget",
+    "test:lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.1",
     "@astrojs/mdx": "^8.0.1",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.2",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "axe-core": "^4.13.0",
+    "lighthouse": "^13.4.1",
     "playwright-core": "^1.63.0"
   }
 }

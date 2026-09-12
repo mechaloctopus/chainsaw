@@ -2,6 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { rehypeTableScroll } from './src/lib/rehype-table-scroll.mjs';
 
 const SITE = process.env.SITE_URL ?? 'https://kauaisawschool.org';
 
@@ -10,7 +11,11 @@ export default defineConfig({
   base: process.env.BASE_PATH ?? '/',
   trailingSlash: 'always',
   integrations: [mdx(), sitemap()],
-  build: { inlineStylesheets: 'never', format: 'directory' },
+  markdown: { rehypePlugins: [rehypeTableScroll] },
+  // The stylesheet is ~7KB gzipped and the site is read on a phone with one
+  // bar: inlining it removes a whole round trip from first paint, and repeat
+  // visits are served by the service worker either way.
+  build: { inlineStylesheets: 'always', format: 'directory' },
   prefetch: false,
   devToolbar: { enabled: false },
   // Self-hosted, build-time-downloaded fonts. No third-party requests at runtime (T-5),

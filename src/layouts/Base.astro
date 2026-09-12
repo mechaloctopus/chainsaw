@@ -34,7 +34,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://kauaisawsch
     <link rel="manifest" href={u('/manifest.webmanifest')} />
     <link rel="icon" href={u('/icon.svg')} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={u('/icon-192.png')} />
-    <Font cssVariable="--font-display" preload={[{ style: "normal" }]} />
+    {/* Only the body face is preloaded. The display face is 90KB and it is
+        never the LCP element — it has a metric-matched fallback, so the
+        headline paints immediately and swaps without moving. Preloading it
+        just takes bandwidth from the text people are actually reading. */}
+    <Font cssVariable="--font-display" />
     <Font cssVariable="--font-body" preload={[{ style: "normal" }]} />
     <script is:inline>
       // Theme before paint. Wrapped: private mode can throw on localStorage.

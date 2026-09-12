@@ -18,7 +18,7 @@ import { u } from '../lib/url';
   </div>
 
   <figure class="scan__fig">
-    <svg viewBox="0 40 800 400" class="scene" role="img" aria-labelledby="scene-t scene-d">
+    <svg viewBox="0 40 800 400" class="scene" role="img" aria-labelledby="scene-t" aria-describedby="scene-d">
       <title id="scene-t">A Kaua‘i yard after a hurricane, with five hidden hazards</title>
       <desc id="scene-d">
         A large albizia lies across a yard, its root ball half out of the ground. A
@@ -211,6 +211,8 @@ import { u } from '../lib/url';
     };
 
     // The targets are in the markup already; JS promotes them to controls.
+    // A picture with buttons in it is no longer role="img": it is a group.
+    svg.setAttribute('role', 'group');
     hits.hidden = false;
     sceneHazards.forEach((h) => {
       const g = hits.querySelector<SVGCircleElement>(`[data-hit="${h.id}"]`);
