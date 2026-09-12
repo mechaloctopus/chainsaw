@@ -62,7 +62,7 @@ h1, h2, h3, h4, .display,
 .block__kicker, .fieldline__tag, .note__label, .hazard__label, .stopwork__label,
 .dock a, th, .checklist .step {
   font-family: var(--font-display);
-  /* The width axis is the point: Archivo dialled out to Expanded reads as a
+  /* The width axis is the point: Archivo dialed out to Expanded reads as a
      stamped machine plate, and stays legible at the 18px floor. */
   font-stretch: 115%;
   font-variation-settings: 'wdth' 115;

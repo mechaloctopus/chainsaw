@@ -11,6 +11,7 @@ interface Props {
 }
 const { entry, prev, next } = Astro.props;
 const d = entry.data;
+const updated = d.updated.toISOString().slice(0, 10);
 ---
 <Base title={`${d.num} · ${d.title}`} description={d.objective} noAffiliate={d.lifeSafety}>
   <div class="shell">
@@ -23,7 +24,7 @@ const d = entry.data;
     <p class="lead">{d.objective}</p>
     <p class="modhead__meta">
       <span>Module {d.num}</span>
-      <span>Updated {d.updated}</span>
+      <span>Updated {updated}</span>
       <span>{d.reviewed
         ? 'Reviewed by a second sawyer'
         : 'Not yet reviewed by a second sawyer'}</span>

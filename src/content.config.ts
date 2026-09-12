@@ -22,7 +22,8 @@ const modules = defineCollection({
     stopWork: z.array(z.string()).default([]),
     /** Rule: reviewed by a working sawyer who is not the author. */
     reviewed: z.boolean().default(false),
-    updated: z.string(),
+    /** YAML dates arrive as Date objects; coerce so both forms work. */
+    updated: z.coerce.date(),
     draft: z.boolean().default(false),
   }),
 });
@@ -35,7 +36,7 @@ const reference = defineCollection({
     order: z.number(),
     /** Pages carrying affiliate links must say so at the top. A-1. */
     affiliate: z.boolean().default(false),
-    updated: z.string(),
+    updated: z.coerce.date(),
   }),
 });
 

@@ -54,7 +54,7 @@ export const sceneHazards: SceneHazard[] = [
     id: 'bystander',
     label: 'Bystander',
     cx: 702, cy: 392, r: 62, lx: 702, ly: 458, anchor: 'middle',
-    what: 'A neighbour who came to watch, well inside two tree lengths.',
+    what: 'A neighbor who came to watch, well inside two tree lengths.',
     why: 'You cannot hear him over the saw and he does not know where the log is going. He is as much a hazard as the wood.',
     href: '/modules/10-two-person-saw-team/',
   },

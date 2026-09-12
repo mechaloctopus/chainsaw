@@ -1,6 +1,6 @@
 /* ==========================================================================
    KAUA'I SAW SCHOOL — DESIGN TOKENS
-   Locked. Components may not invent colours, sizes, or spacing outside this
+   Locked. Components may not invent colors, sizes, or spacing outside this
    file. See PROJECT_RULES.md §8 and rules D-1, D-2.
 
    Contrast, measured against the page ground (--surface), sRGB, WCAG 2.1:
@@ -22,7 +22,7 @@
   --color-canopy: #1f3a2c;   /* deep wet green */
   --color-pith: #efe6d6;     /* pale albizia heartwood */
   --color-hazard: #ff5a00;   /* high-vis PPE orange. RESERVED. Rule D-1. */
-  --color-steel: #6e7275;    /* chain grey — hairlines only, fails text contrast */
+  --color-steel: #6e7275;    /* chain gray — hairlines only, fails text contrast */
 
   /* Derived, contrast-corrected. */
   --color-steel-deep: #464b4e; /* metadata text at AAA */
@@ -62,7 +62,7 @@
 
   /* Structure. The rail is the site's spine: a continuous rule with module
      numbers and hazard markers hanging off it, like cutters along a bar. */
-  --shell: 76rem;             /* outer bound, centred */
+  --shell: 76rem;             /* outer bound, centerd */
   --pad-x: 0.875rem;          /* page side gutter — never zero, Rule: 16px min */
   --rail-w: 1.5rem;           /* page edge -> rule: where numbers live */
   --rail-gap: 0.875rem;       /* rule -> content */

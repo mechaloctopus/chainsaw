@@ -1,0 +1,114 @@
+---
+num: "03"
+title: Pre-start inspection
+objective: Run the same twelve-point check, in the same order, every time you pick the saw up — until you cannot start it without doing it.
+summary: The ritual. Twelve points, same order, every time.
+phase: 2
+fieldCard:
+  - "Brake · catcher · bar · chain · sprocket · nuts · filter · plug · fuel & oil · muffler · mounts · cord."
+stopWork:
+  - "The chain brake will not stop the chain."
+  - "The chain catcher is missing."
+  - "Bar rails are spread, blued, or the groove will not clean out."
+  - "The throttle sticks open or does not return."
+  - "You find a crack in the case or a fuel leak."
+updated: 2026-09-12
+---
+
+Do it in the same order every time and it stops being a checklist and becomes
+a habit you can run while talking to someone else. That is the point. A
+checklist you have to think about is a checklist you skip at 4pm.
+
+Ten minutes of this at the truck saves a dead saw halfway up a driveway with
+no tools.
+
+<Block kicker="The twelve points, in order">
+
+<Checklist id="prestart">
+  <Check n="1" why="Start it, hold it, engage the brake, confirm the chain actually stops. Then release and confirm it runs again. The brake is the one item you test rather than inspect.">
+    **Chain brake.** Engages, releases, and stops the chain.
+  </Check>
+  <Check n="2" why="Under the bar, ahead of your right hand. Plastic or metal. Broken ones look like a stub — you have to know what a whole one looks like.">
+    **Chain catcher.** Present and unbroken.
+  </Check>
+  <Check n="3" why="Run a gloved finger along both rails: even height, no burrs, no blue heat marks. Clean the groove with the scrench tip and check the oil hole is open. Squeeze the rails — if the chain rocks side to side, the rails are spread.">
+    **Bar.** Rails even, groove clean, oil hole clear.
+  </Check>
+  <Check n="4" why="Pull a cutter with a gloved hand: the chain should move freely and snap back against the bar. Drive links must stay in the groove when you lift the chain at the middle of the bar. Look at a cutter — is there a shiny edge or a rounded nose?">
+    **Chain.** Sharp, correct tension, drive links undamaged.
+  </Check>
+  <Check n="5" why="Cover off. Look at the wear marks under the drive link tangs, and confirm the E-clip and washer are on the drum. This is where saws get lost in the field.">
+    **Sprocket, E-clip and washer.**
+  </Check>
+  <Check n="6" why="Snug, with the bar nose held up while you tighten. A loose bar throws chains and chews the mounting pad.">
+    **Bar nuts torqued.**
+  </Check>
+  <Check n="7" why="Kaua‘i red dirt is abrasive and it is everywhere after a storm. Look for a clean seal all the way around the filter, not just a clean filter. A gap at the edge feeds dust straight into the carburetor.">
+    **Air filter clean and seated with no gaps.**
+  </Check>
+  <Check n="8" why="Boot pushed fully home. Carry a spare plug — they are three dollars and they end a day.">
+    **Spark plug and boot.**
+  </Check>
+  <Check n="9" why="Both. Correct mix in the fuel tank, bar oil in the other. If the oil tank is still full when the fuel tank is empty, the oiler is not working and you are cooking the bar.">
+    **Fuel and bar oil.**
+  </Check>
+  <Check n="10" why="A clogged screen makes a saw feel gutless and makes people think the carb needs adjusting. A missing one starts brush fires.">
+    **Muffler and spark arrestor screen clear.**
+  </Check>
+  <Check n="11" why="Grab the handles and twist. Perished anti-vibration mounts let the powerhead move independently of the handles, which wrecks your wrists and your control. Look for cracks around the handle bolts and the fuel tank seam.">
+    **AV mounts, handle bolts, case cracks.**
+  </Check>
+  <Check n="12" why="Pull it slowly all the way out and let it return. A frayed cord will break at the worst moment, and a recoil that does not return means the spring is going.">
+    **Starter cord and recoil.**
+  </Check>
+</Checklist>
+
+</Block>
+
+<Hazard label="The one that looks fine">
+A chain brake that moves normally can still be useless. The band lives inside
+the clutch cover, in the one part of the saw that fills with oily sawdust, and
+when that packing sets hard the band cannot clamp.
+
+You cannot see this from outside. You find it by testing the brake with the
+saw running, and by pulling the cover and cleaning under it at the end of
+every day.
+</Hazard>
+
+<Block kicker="Tension, properly">
+
+Too loose throws the chain. Too tight cooks the bar and eats the sprocket.
+The window is wider than people think, but both edges are bad.
+
+1. Loosen the bar nuts slightly and **hold the bar nose up**.
+2. Turn the tensioner until the chain sits against the underside of the bar
+   with no sag.
+3. Pull a cutter away from the bar at the middle: the drive links should stay
+   in the groove.
+4. Pull the chain around by hand with a glove on: it should move freely, not
+   drag.
+5. Tighten the bar nuts with the nose still held up.
+6. **Re-check when the saw is warm.** A chain that was right cold will be
+   loose after a tank — and a new chain stretches within the first few
+   minutes.
+
+</Block>
+
+<FailureModes>
+  <Fail tell="You set tension with the bar nose resting on a stump. Tight when the nose is down, loose the moment you lift it.">
+    Tensioning without holding the bar nose up.
+  </Fail>
+  <Fail tell="The saw ran fine for an hour, then started throwing the chain. The chain warmed up and got long, and nobody re-checked.">
+    Setting tension cold and never checking it again.
+  </Fail>
+  <Fail tell="Oil tank still full at the end of the tank of fuel; smoke off the bar; blue heat marks on the rails. That bar is now scrap and the chain with it.">
+    Cutting a whole tank without noticing the oiler has stopped.
+  </Fail>
+  <Fail tell="Saw is hard to start, then bogs, then runs lean and hot. You get one warning and then a scored piston.">
+    Running a filter that has a gap at the seal after a dusty morning.
+  </Fail>
+</FailureModes>
+
+<FieldLine>
+Brake · catcher · bar · chain · sprocket · nuts · filter · plug · fuel &amp; oil · muffler · mounts · cord.
+</FieldLine>

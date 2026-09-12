@@ -70,7 +70,7 @@ export const parts: Part[] = [
     id: 'filter',
     n: 9,
     name: 'Air filter and cover',
-    job: 'Keeps grit out of the carburettor and cylinder.',
+    job: 'Keeps grit out of the carburetor and cylinder.',
     fail: 'On Kaua‘i this is the part that kills saws. Red dirt is abrasive; a gap at the cover edge or a filter refitted while damp puts dust straight into the engine. It leans out, overheats and scores the piston.',
   },
   {

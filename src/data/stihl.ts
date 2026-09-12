@@ -1,5 +1,5 @@
 /** STIHL model-code reference. Nominative use only — no logos, no brand
- *  colours, no implication of endorsement (Rule L-4).
+ *  colors, no implication of endorsement (Rule L-4).
  *
  *  The letter system has never been perfectly consistent. STIHL has reused,
  *  retired and changed meanings across decades, so a code on a vintage saw may
@@ -39,12 +39,12 @@ export const suffixes: Suffix[] = [
   { code: 'C', label: 'Comfort package', note: 'A bundle, not one feature — usually combined with another letter, as in C-M or C-B.' },
   { code: 'D', label: 'Catalytic converter', note: 'Emissions-controlled muffler on some markets and models.' },
   { code: 'E', label: 'Easy2Start', note: 'Softer recoil pull. Nothing to do with how the saw cuts.' },
-  { code: 'i', label: 'Fuel injection', note: 'Electronically injected (the 500i and friends). No carburettor to tune.' },
+  { code: 'i', label: 'Fuel injection', note: 'Electronically injected (the 500i and friends). No carburetor to tune.' },
   { code: 'M', label: 'M-Tronic', note: 'Electronic engine management: no carb screws to fiddle with, self-adjusting for altitude and fuel.' },
   { code: 'Q', label: 'Quickstop chain brake', note: 'Historically called out as a suffix. Modern saws all have a chain brake — test it daily regardless.' },
   { code: 'R', label: 'Wrap handle', note: 'Handlebar wrapping the side of the saw, for cutting in more positions. Common on felling saws.' },
   { code: 'T', label: 'Top handle — climbing saw', note: 'Built for a roped arborist in a tree, one-handed by design. In untrained hands it is the most dangerous saw sold.' },
-  { code: 'V', label: 'Heated carburettor / winter option', note: 'Irrelevant in Hawai‘i.' },
+  { code: 'V', label: 'Heated carburetor / winter option', note: 'Irrelevant in Hawai‘i.' },
   { code: 'W', label: 'Heated handles', note: 'Also irrelevant here.' },
   { code: 'Z', label: 'Spark-arresting muffler', note: 'A screen in the exhaust. Required on public land, and a real fire issue on the dry west side.' },
 ];

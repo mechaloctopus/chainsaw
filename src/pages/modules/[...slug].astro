@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import ModuleLayout from '../../layouts/ModuleLayout.astro';
+import { mdxComponents } from '../../components/mdx';
+
+export async function getStaticPaths() {
+  const mods = (await getCollection('modules'))
+    .filter((m) => !m.data.draft)
+    .sort((a, b) => a.data.num.localeCompare(b.data.num));
+
+  return mods.map((entry, i) => {
+    const near = (e?: typeof entry) =>
+      e ? { slug: e.id, num: e.data.num, title: e.data.title } : undefined;
+    return {
+      params: { slug: entry.id },
+      props: { entry, prev: near(mods[i - 1]), next: near(mods[i + 1]) },
+    };
+  });
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+---
+<ModuleLayout entry={entry} prev={prev} next={next}>
+  <Content components={mdxComponents} />
+</ModuleLayout>

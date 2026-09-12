@@ -1,0 +1,122 @@
+---
+num: "05"
+title: Bar, chain, and the numbers
+objective: Read the three numbers off your bar, buy the right chain without a catalogue, and pick the chain type that survives storm wood.
+summary: Pitch, gauge, drive links. Semi-chisel for dirty wood. Match the bar to the saw.
+phase: 2
+fieldCard:
+  - "Pitch · gauge · drive links — all three off the bar stamp. All three must match."
+  - "Storm cleanup chain is semi-chisel. Dirt kills full chisel in one cut."
+stopWork:
+  - "Bar rails are spread, blued, or worn to a knife edge."
+  - "A new chain is loose in the groove — wrong gauge or a worn bar."
+updated: 2026-09-12
+---
+
+Three numbers, all three stamped on the bar. Get any one of them wrong and
+the chain either will not fit or will not stay on.
+
+<ChainNumbers />
+
+<Block kicker="Pitch">
+
+The distance between three consecutive rivets, divided by two. You do not
+have to measure it — it is stamped on the bar — but knowing what it means
+stops you buying the wrong box.
+
+- <Spec>1/4 in</Spec> — carving and small battery saws.
+- <Spec>.325 in</Spec> — mid-size saws. Fast for its size.
+- <Spec>3/8 in low profile</Spec> — the homeowner standard, also sold as
+  0.375 LP or Picco. Usually a low-kickback safety chain.
+- <Spec>3/8 in</Spec> — the professional default, and the easiest chain to
+  find on this island in a hurry.
+- <Spec>.404 in</Spec> — big timber and harvester chain.
+
+</Block>
+
+<Block kicker="Gauge">
+
+The thickness of the drive link — the tang that rides in the bar groove.
+<Spec>.043</Spec>, <Spec>.050</Spec>, <Spec>.058</Spec>,
+<Spec>.063</Spec> inches.
+
+This one has no tolerance. Too thin and the chain rocks in the groove, cuts
+crooked and throws. Too thick and it will not seat at all.
+
+</Block>
+
+<Block kicker="Drive link count">
+
+How many drive links in the loop. Counted, not measured, and specific to the
+bar length *and* the saw's mount. A 20-inch bar on two different saws can
+take different counts.
+
+If the bar stamp is worn away, count the drive links on the old chain. It is
+tedious and it takes two minutes.
+
+</Block>
+
+<Block kicker="Which chain for storm cleanup">
+
+This is the one recommendation in this module that will change your day.
+
+**Buy semi-chisel.** The rounded working corner holds an edge in dirty wood,
+and storm wood is nothing but dirty wood — root balls full of sand, trunks
+that rolled through mud, salt spray on everything within a mile of the coast.
+
+Full chisel cuts faster in clean timber and goes dull in one pass through a
+muddy butt. You will spend the day filing instead of cutting.
+
+<ChainFinder />
+
+</Block>
+
+<Block kicker="Bar maintenance">
+
+A bar is a wear item that people treat as permanent.
+
+<Checklist id="bar-care" ordered={false}>
+  <Check id="groove" why="A scrench tip, a screwdriver, or a purpose-made groove cleaner. Packed sawdust blocks the oil feed and holds grit against the drive links.">
+    **Clean the groove** and the oil holes every time the chain comes off.
+  </Check>
+  <Check id="flip" why="Bars wear on the bottom rail because that is the rail doing the cutting. Flipping evens it out and doubles bar life.">
+    **Flip the bar** each time you fit a new chain.
+  </Check>
+  <Check id="dress" why="A flat file run along the rail knocks off the burr that a chain throws up. A burred rail holds the chain crooked.">
+    **Dress the rails** when you feel a burr.
+  </Check>
+  <Check id="spread" why="Squeeze the rails together with your fingers at the middle of the bar. If a drive link rocks noticeably side to side, the rails are spread and the bar is finished.">
+    **Check for rail spread.**
+  </Check>
+  <Check id="nose" why="Nose sprockets seize when the oil feed blocks. A sprocket-nose bar that stops turning will strip a chain.">
+    **Spin the nose sprocket** if you have one.
+  </Check>
+</Checklist>
+
+</Block>
+
+<Hazard label="Too much bar">
+A bar longer than the saw was designed for is not a bigger saw. It is a saw
+that bogs in the cut, tempts you to lean on it, puts the kickback quadrant
+further from your hands, and oils badly at the nose because the pump was
+never sized for it.
+
+If you need a bigger cut, get a bigger saw or make the cut in stages from
+both sides.
+</Hazard>
+
+<FailureModes>
+  <Fail tell="A brand new chain that rocks in the groove or jumps out on the first curve. Wrong gauge, or a bar with spread rails.">
+    Matching the chain to the box it came in instead of to the bar.
+  </Fail>
+  <Fail tell="The cut wanders off square and the saw wants to pull to one side no matter how you hold it. Usually uneven cutters — sometimes a worn bar.">
+    Blaming your technique for a bar and chain problem.
+  </Fail>
+  <Fail tell="Full chisel, one pass through a root ball, and now every cutter is rounded and the saw makes dust. An afternoon lost to filing.">
+    Buying the fast chain for the dirty job.
+  </Fail>
+</FailureModes>
+
+<FieldLine>
+Pitch · gauge · drive links, all three off the bar. Semi-chisel for storm wood.
+</FieldLine>

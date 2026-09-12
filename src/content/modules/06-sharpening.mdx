@@ -1,0 +1,163 @@
+---
+num: "06"
+title: Sharpening
+objective: Put a working edge on a chain by hand or with a jig, and diagnose what a bad edge is doing from the chips it makes.
+summary: Angles, hook, rakers. Big chips mean sharp. Dust means stop.
+phase: 2
+fieldCard:
+  - "Big square chips = sharp. Fine dust = dull or rakers low. Curved cut = one side filed harder."
+  - "Every tooth the same length. Re-check rakers every few sharpenings."
+stopWork:
+  - "The saw needs pushing to cut. A dull chain is a kickback and a fatigue hazard, not an inconvenience."
+updated: 2026-09-12
+---
+
+A sharp chain cuts itself. You guide it. A dull chain has to be pushed, and
+pushing is how the bar ends up somewhere you did not plan.
+
+Learn this on a bench, at home, with a chain in a vise, before you try it on
+a tailgate in the rain.
+
+<Block kicker="What you are actually making">
+
+A cutter is a small knife blade bent over at the top, and the part doing the
+work is the **corner** where the top plate meets the side plate. Everything
+about filing is about that corner: how sharp it is, what angle it meets the
+wood at, and how deep a bite the depth gauge in front of it allows.
+
+<ToothProfile />
+
+</Block>
+
+<Block kicker="The numbers, and where they come from">
+
+- **Round file diameter** by pitch:
+  <Spec unverified>.325 → 3/16 in</Spec>,
+  <Spec unverified>3/8 LP → 5/32 in</Spec>,
+  <Spec unverified>3/8 → 7/32 in</Spec>,
+  <Spec unverified>.404 → 7/32 in</Spec>.
+  These vary between Oregon, STIHL and Carlton — match the file to the chain
+  you own.
+- **Top-plate angle:** around <Spec unverified>25°–35°</Spec>, commonly 30°.
+  Most chains have a witness mark stamped on the top plate. Follow the mark.
+- **File height:** roughly a fifth of the file diameter should sit above the
+  top plate. Too low and you get hook; too high and you get back-slope.
+- **Side-plate angle:** set by holding the file level, or at the small
+  downward angle the manufacturer specifies for that chain.
+- **Depth gauges:** around <Spec unverified>.025 in</Spec> for general use,
+  set with a gauge tool made for your chain.
+
+<Note label="Why every number above is flagged">
+These are working figures, and this site does not publish a spec it has not
+checked against the manufacturer. Your chain box, or the manufacturer's
+filing chart, is the authority. See the [unverified list](/about/verify/).
+</Note>
+
+</Block>
+
+<Block kicker="Hook and back-slope">
+
+The two ways the top plate goes wrong, and they feel completely different in
+the wood.
+
+- **Too much hook.** The file sat too low, undercutting the edge. The chain
+  grabs, chatters, and pulls itself into the cut. Corners break off. It feels
+  aggressive and dangerous, and it is.
+- **Back-slope.** The file sat too high, so the edge leans away from the wood.
+  The chain will not cut, the saw smokes, and you push harder — which is the
+  most common way people end up in trouble.
+
+Both come from file height, not from the angle, which is why a guide is worth
+using until your hands know the height.
+
+</Block>
+
+<Block kicker="Every tooth the same length">
+
+This is the rule beginners skip and the reason their saws cut in an arc.
+
+If the cutters on one side are longer than the other, that side takes a bigger
+bite, and the saw curves away in the cut — no matter how you hold it. Once you
+have hit a rock with one cutter and filed it back hard, you have to bring
+**every** cutter down to match it.
+
+Count your strokes. Same number, same angle, same height, every tooth, both
+sides. Then check the lengths by eye against the shortest one.
+
+</Block>
+
+<Block kicker="Rakers, and why they sneak up on you">
+
+The depth gauge — the raker — is the little ramp in front of each cutter. It
+decides how deep the corner can bite.
+
+Every time you file a cutter, the cutter gets shorter and lower. The raker
+does not. So after a few sharpenings the rakers are effectively **too high**,
+the cutters cannot reach the wood, and the saw stops cutting even though every
+edge is razor sharp.
+
+1. Sharpen the cutters first.
+2. Lay the gauge tool across the chain.
+3. File the part of the raker that stands above the tool, flat, with a flat
+   file.
+4. **Round off the front of the raker** afterwards so it does not catch.
+5. Check them every two or three sharpenings, not every one.
+
+<Hazard label="Rakers too low">
+Filing rakers too far is the fastest way to make a dangerous chain. It takes
+an enormous bite, grabs, and kicks. If the saw suddenly feels violent and
+self-feeding after a sharpening session, that is what you did.
+</Hazard>
+
+</Block>
+
+<Block kicker="Jig or freehand">
+
+Both. In that order.
+
+**Learn on a jig.** A roller guide, a bar-mounted filing guide, or a bench
+grinder gives you repeatability you do not have yet — consistent angle,
+consistent height, consistent tooth length. For a volunteer crew where
+several people share saws, a jig is the right call, because it makes the
+result independent of whose hands are on the file.
+
+**Then learn freehand.** It is faster, it needs nothing but a file and a
+gauge, and it is what you will actually do on a tailgate at 2pm with four
+chains to bring back. But freehand needs the muscle memory that filing a
+hundred teeth in a jig gives you.
+
+</Block>
+
+<Block kicker="Diagnose from the chips">
+
+The wood tells you everything. Look at what comes out of the cut.
+
+| What you see | What it means |
+| --- | --- |
+| Big square chips, saw pulls itself in | Sharp. This is what you want. |
+| Fine dust, saw needs pushing | Dull, or rakers too high. |
+| Long stringy shavings | Chain is fine; you are cutting green softwood fiber — albizia does this. |
+| The cut curves off square | One side filed harder or longer than the other. |
+| Smoke, hot bar, chain slack | Dull, dirty, or the oiler has stopped. |
+| Chattering, grabbing | Too much hook, or rakers filed too low. |
+
+</Block>
+
+<FailureModes>
+  <Fail tell="Saw cuts fine for two tanks after sharpening then 'goes dull' fast. The edges are fine — the rakers were never touched.">
+    Sharpening cutters and never touching the depth gauges.
+  </Fail>
+  <Fail tell="The cut wanders and you find yourself twisting the saw to correct it. Measure your cutters — one side will be visibly longer.">
+    Filing one side harder than the other.
+  </Fail>
+  <Fail tell="Fresh file marks on the raker that you never rounded off. It catches on the wood and the chain jerks.">
+    Leaving a square front edge on a filed raker.
+  </Fail>
+  <Fail tell="You are filing in the field, in the rain, on a tailgate, with a chain you could have swapped in three minutes. Twenty minutes lost, badly filed.">
+    Filing when you should be swapping.
+  </Fail>
+</FailureModes>
+
+<FieldLine>
+Chips not dust. Every tooth the same. Rakers checked every few sharpenings.
+</FieldLine>
