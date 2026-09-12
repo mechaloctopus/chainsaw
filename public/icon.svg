@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Kaua'i Saw School">
+  <title>Kaua‘i Saw School</title>
+  <rect width="512" height="512" fill="#141210"/>
+  <!-- guide bar -->
+  <path d="M64 236h316a40 40 0 0 1 0 80H64z" fill="#efe6d6"/>
+  <!-- chain: cutters along the bar -->
+  <g fill="#141210">
+    <path d="M92 248h34v14H92zM152 248h34v14h-34zM212 248h34v14h-34zM272 248h34v14h-34zM332 248h30v14h-30z"/>
+    <path d="M92 290h34v14H92zM152 290h34v14h-34zM212 290h34v14h-34zM272 290h34v14h-34zM332 290h30v14h-30z"/>
+  </g>
+  <!-- bar slot -->
+  <rect x="150" y="268" width="150" height="16" fill="#141210"/>
+  <!-- powerhead block -->
+  <rect x="64" y="196" width="88" height="160" rx="14" fill="#efe6d6"/>
+  <rect x="84" y="220" width="48" height="14" fill="#141210"/>
+  <rect x="84" y="248" width="48" height="14" fill="#141210"/>
+</svg>

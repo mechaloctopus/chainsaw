@@ -1,0 +1,51 @@
+---
+import Base from './Base.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { u } from '../lib/url';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entry: CollectionEntry<'reference'> }
+const { entry } = Astro.props;
+const d = entry.data;
+const updated = d.updated.toISOString().slice(0, 10);
+---
+<Base title={d.title} description={d.summary}>
+  <div class="shell">
+    <p class="crumb no-print"><a href={u('/')}>← Home</a></p>
+  </div>
+  <article class="shell railed flow refhead">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h1>{d.title}</h1>
+    <p class="lead">{d.summary}</p>
+    <p class="modhead__meta"><span>Updated {updated}</span></p>
+
+    {d.affiliate && (
+      <aside class="ftc">
+        <p>
+          <b>Some links on this page earn a commission.</b> If you buy through them this
+          site gets a few percent, at no extra cost to you. It changes nothing about what
+          is recommended or the order it appears in — the
+          <a href={u('/about/editorial-policy/')}>editorial policy</a> says how, in plain
+          language, and there are no commercial links anywhere on a life-safety page.
+        </p>
+      </aside>
+    )}
+
+    <slot />
+    <Disclaimer />
+  </article>
+</Base>
+
+<style>
+  .crumb { padding-top: 1rem; font-size: var(--text-meta); font-weight: 600; }
+  .crumb a { text-decoration: none; min-height: var(--tap); display: inline-flex; align-items: center; }
+  .refhead { padding-top: 1.5rem; }
+  .ftc {
+    border: 2px solid var(--line-strong);
+    border-left-width: 0.5rem;
+    padding: 0.85rem 1rem;
+    background: var(--surface-lift);
+    font-size: var(--text-meta);
+  }
+  .ftc p { max-width: var(--measure); }
+</style>

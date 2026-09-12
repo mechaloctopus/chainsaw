@@ -1,10 +1,118 @@
 ---
 import Base from '../layouts/Base.astro';
+import HazardScan from '../islands/HazardScan.astro';
+import { getCollection } from 'astro:content';
 import { site } from '../data/site';
+import { u } from '../lib/url';
+
+const mods = (await getCollection('modules'))
+  .filter((m) => !m.data.draft)
+  .sort((a, b) => a.data.num.localeCompare(b.data.num));
 ---
-<Base title={site.name}>
-  <div class="shell railed flow">
-    <h1>Smoke test</h1>
-    <p>Body copy at the 18px floor.</p>
+<Base title={site.name} description={site.description}>
+  <HazardScan />
+
+  <div class="shell railed flow thesis">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h2>What this is</h2>
+    <p class="lead">
+      Free, written reference for volunteers cutting storm debris on Kaua‘i. Open it once
+      and it stays on your phone — it works with no signal, because Wailua Homesteads has
+      no signal.
+    </p>
+    <p>
+      It does not train you, qualify you, or certify you, and it issues nothing that says
+      it did. It is the part you can learn before you get to the wood: what holds a
+      loaded log up, which part of the bar puts the saw in your face, how a two-person
+      crew keeps each other alive, and which jobs to hand to somebody else.
+    </p>
+    <p>
+      That last one matters most. <a href={u('/modules/00-before-you-touch-a-saw/')}>The
+      refusal principle</a> is the thesis of this whole site: if you don’t feel safe doing
+      it, don’t do it — flag it and wait for someone who can.
+    </p>
+
+    <div class="btn-row">
+      <a class="btn btn--solid" href={u('/modules/00-before-you-touch-a-saw/')}>Start at module 00</a>
+      <a class="btn" href={u('/modules/12-downed-power-lines/')}>Downed power lines</a>
+    </div>
+  </div>
+
+  <div class="shell railed flow modules-block">
+    <span class="rail-mark" aria-hidden="true">01</span>
+    <h2 id="modules">The modules</h2>
+    <p>
+      Fifteen, in order. Read 00, 01 and 12 before you cut anything. The rest you can take
+      as they come up.
+    </p>
+    <ol class="index">
+      {mods.map((m) => (
+        <li>
+          <a href={u(`/modules/${m.id}/`)}>
+            <span class="index__title">
+              <span class="index__num">{m.data.num}</span> {m.data.title}
+            </span>
+            {m.data.lifeSafety && <span class="index__flag">Life safety</span>}
+            <span class="index__sub">{m.data.summary}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <div class="shell railed flow tools-block">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h2>Tools</h2>
+    <p>Small things that answer one question each.</p>
+    <ul class="index">
+      <li><a href={u('/reference/stihl/')}>
+        <span class="index__title">STIHL model decoder</span>
+        <span class="index__sub">What MS, MSA, C-M, T and the numbers actually mean</span>
+      </a></li>
+      <li><a href={u('/modules/05-bar-chain-and-the-numbers/')}>
+        <span class="index__title">Chain finder</span>
+        <span class="index__sub">Bar stamp in, shopping line out</span>
+      </a></li>
+      <li><a href={u('/modules/10-two-person-saw-team/')}>
+        <span class="index__title">Tank-for-tank timer</span>
+        <span class="index__sub">Swap roles every tank, and re-read the job when you do</span>
+      </a></li>
+      <li><a href={u('/field-card/')}>
+        <span class="index__title">Printable field card</span>
+        <span class="index__sub">One page. Print it, laminate it, keep it in the truck</span>
+      </a></li>
+      <li><a href={u('/tools/')}>
+        <span class="index__title">All tools</span>
+        <span class="index__sub">Including the saw anatomy plate and the hazard scan</span>
+      </a></li>
+    </ul>
   </div>
 </Base>
+
+<style>
+  .thesis { padding-top: 2.5rem; }
+  .modules-block, .tools-block { padding-top: 3rem; }
+  .index__num {
+    font-family: var(--font-mono);
+    color: var(--text-quiet);
+    font-size: 0.85em;
+    margin-right: 0.15rem;
+  }
+
+  /* The single orchestrated page-load moment on the site, and it is only on
+     this page (Rule D-6). Nothing anywhere else animates on scroll. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.scan__head) { animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    :global(.scan__head .scan__sub) { animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.12s both; }
+    :global(.scene) { animation: wash 0.7s ease-out 0.18s both; }
+    :global(.scan__bar) { animation: rise 0.4s ease-out 0.36s both; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(0.55rem); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes wash {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u } from '../../lib/url';
+
+const mods = (await getCollection('modules'))
+  .filter((m) => !m.data.draft)
+  .sort((a, b) => a.data.num.localeCompare(b.data.num));
+const phase = (n: number) => mods.filter((m) => m.data.phase === n);
+---
+<Base
+  title="All modules"
+  description="Fifteen chainsaw safety modules for Kaua‘i storm cleanup volunteers, from the refusal principle to felling fundamentals."
+>
+  <div class="shell railed flow modlist">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h1>The modules</h1>
+    <p class="lead">
+      Fifteen, in order. Each one ends with what goes wrong, when to stop, and the line
+      that goes on the field card.
+    </p>
+
+    <h2>Read these three first</h2>
+    <ol class="index">
+      {phase(1).map((m) => (
+        <li><a href={u(`/modules/${m.id}/`)}>
+          <span class="index__title">{m.data.num} {m.data.title}</span>
+          <span class="index__flag">Life safety</span>
+          <span class="index__sub">{m.data.objective}</span>
+        </a></li>
+      ))}
+    </ol>
+
+    <h2>The rest</h2>
+    <ol class="index">
+      {phase(2).map((m) => (
+        <li><a href={u(`/modules/${m.id}/`)}>
+          <span class="index__title">{m.data.num} {m.data.title}</span>
+          {m.data.lifeSafety && <span class="index__flag">Life safety</span>}
+          <span class="index__sub">{m.data.objective}</span>
+        </a></li>
+      ))}
+    </ol>
+
+    <p class="modlist__note">
+      None of these have been reviewed by a second working sawyer yet, and every module
+      says so at the top. If you cut for a living and you are willing to read one and
+      push back hard, that is the most useful thing anyone can do for this site right
+      now — <a href="https://github.com/mechaloctopus/chainsaw/issues">open an issue</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .modlist { padding-top: 2rem; }
+  .modlist__note {
+    font-size: var(--text-meta);
+    color: var(--text-quiet);
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+    margin-top: 2rem !important;
+  }
+</style>

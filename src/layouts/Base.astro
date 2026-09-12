@@ -18,7 +18,7 @@ const full = title === site.name ? title : `${title} — ${site.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://kauaisawschool.org');
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-base={import.meta.env.BASE_URL}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,7 +47,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://kauaisawsch
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <Masthead />
-    <main id="main">
+    <main id="main" data-pagefind-body>
       <slot />
     </main>
     <Footer />

@@ -1,0 +1,172 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u } from '../lib/url';
+
+const mods = (await getCollection('modules'))
+  .filter((m) => !m.data.draft)
+  .sort((a, b) => a.data.num.localeCompare(b.data.num));
+const refs = (await getCollection('reference')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base
+  title="Search"
+  description="Search every module, tool and reference page. Works offline once the site is cached."
+>
+  <div class="shell railed flow srch">
+    <span class="rail-mark" aria-hidden="true">?</span>
+    <h1>Search</h1>
+
+    <form class="srch__form" data-search role="search" autocomplete="off">
+      <label class="srch__label" for="q">What are you looking for?</label>
+      <input
+        id="q"
+        name="q"
+        type="search"
+        placeholder="kickback · root ball · raker · KIUC"
+        aria-describedby="srch-hint"
+      />
+      <p class="srch__hint" id="srch-hint">
+        Searches the whole site on your own device. Works with no signal once the site has
+        been opened once.
+      </p>
+    </form>
+
+    <div class="srch__results" data-results aria-live="polite"></div>
+
+    <div data-index>
+      <h2>Everything on this site</h2>
+      <ol class="index">
+        {mods.map((m) => (
+          <li><a href={u(`/modules/${m.id}/`)}>
+            <span class="index__title">{m.data.num} {m.data.title}</span>
+            {m.data.lifeSafety && <span class="index__flag">Life safety</span>}
+            <span class="index__sub">{m.data.summary}</span>
+          </a></li>
+        ))}
+        {refs.map((r) => (
+          <li><a href={u(`/reference/${r.id}/`)}>
+            <span class="index__title">{r.data.title}</span>
+            <span class="index__sub">{r.data.summary}</span>
+          </a></li>
+        ))}
+        <li><a href={u('/field-card/')}>
+          <span class="index__title">Field card</span>
+          <span class="index__sub">One printable page</span>
+        </a></li>
+        <li><a href={u('/tools/')}>
+          <span class="index__title">Tools</span>
+          <span class="index__sub">Decoder, chain finder, anatomy plate, rotation timer</span>
+        </a></li>
+        <li><a href={u('/about/')}>
+          <span class="index__title">About, and how to help</span>
+          <span class="index__sub">What this refuses to be, and how it is built</span>
+        </a></li>
+        <li><a href={u('/about/verify/')}>
+          <span class="index__title">Unverified specs</span>
+          <span class="index__sub">Every number still waiting on a primary source</span>
+        </a></li>
+        <li><a href={u('/about/editorial-policy/')}>
+          <span class="index__title">Editorial and affiliate policy</span>
+          <span class="index__sub">How this site handles money</span>
+        </a></li>
+        <li><a href={u('/about/disclaimer/')}>
+          <span class="index__title">Disclaimer and terms</span>
+          <span class="index__sub">Short, because a long one protects nobody</span>
+        </a></li>
+      </ol>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Pagefind's index is loaded on the first keystroke, not on page load, so the
+  // route ships almost no JavaScript until you actually search (T-3). The full
+  // site index below is the no-JS answer (T-4).
+  const root = document.querySelector<HTMLElement>('[data-search]');
+  const out = document.querySelector<HTMLElement>('[data-results]');
+  const idx = document.querySelector<HTMLElement>('[data-index]');
+  const input = root?.querySelector<HTMLInputElement>('input');
+
+  if (root && out && input && idx) {
+    root.addEventListener('submit', (e) => e.preventDefault());
+
+    type Pagefind = {
+      search: (q: string) => Promise<{ results: Array<{ data: () => Promise<any> }> }>;
+    };
+    let pf: Pagefind | null = null;
+    let seq = 0;
+
+    const load = async () => {
+      if (pf) return pf;
+      const base = document.documentElement.dataset.base || '/';
+      // Vite must not try to resolve this at build time: it only exists after
+      // `pagefind` runs over the built output.
+      pf = (await import(/* @vite-ignore */ `${base}_pagefind/pagefind.js`)) as Pagefind;
+      return pf;
+    };
+
+    const esc = (s: string) =>
+      s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    const run = async () => {
+      const q = input.value.trim();
+      const mine = ++seq;
+      if (q.length < 2) {
+        out.innerHTML = '';
+        idx.hidden = false;
+        return;
+      }
+      idx.hidden = true;
+      out.innerHTML = '<p class="srch__status">Searching…</p>';
+      try {
+        const engine = await load();
+        const res = await engine.search(q);
+        if (mine !== seq) return;
+        const top = await Promise.all(res.results.slice(0, 12).map((r) => r.data()));
+        if (mine !== seq) return;
+        out.innerHTML = top.length
+          ? `<p class="srch__status">${top.length} result${top.length === 1 ? '' : 's'} for “${esc(q)}”</p>` +
+            '<ol class="index">' +
+            top
+              .map(
+                (d: any) =>
+                  `<li><a href="${esc(d.url)}"><span class="index__title">${esc(d.meta?.title ?? d.url)}</span><span class="index__sub">${d.excerpt}</span></a></li>`,
+              )
+              .join('') +
+            '</ol>'
+          : `<p class="srch__status">Nothing for “${esc(q)}”. Try a single word — <b>raker</b>, <b>hinge</b>, <b>albizia</b>.</p>`;
+      } catch {
+        if (mine !== seq) return;
+        out.innerHTML =
+          '<p class="srch__status">Search index unavailable. Everything on the site is listed below.</p>';
+        idx.hidden = false;
+      }
+    };
+
+    let t: number | undefined;
+    input.addEventListener('input', () => {
+      clearTimeout(t);
+      t = window.setTimeout(run, 160);
+    });
+    const q0 = new URLSearchParams(location.search).get('q');
+    if (q0) { input.value = q0; run(); }
+  }
+</script>
+
+<style>
+  .srch { padding-top: 2rem; }
+  .srch__form { display: grid; gap: 0.35rem; }
+  .srch__label { font-family: var(--font-display); font-weight: 800; font-size: 1.0625rem; }
+  .srch__form input {
+    min-height: var(--tap);
+    padding: 0.65rem 0.8rem;
+    font-size: var(--text-lead);
+    background: var(--surface-lift);
+    border: 2px solid var(--line-strong);
+    width: 100%;
+    max-width: 32rem;
+  }
+  .srch__hint { font-size: var(--text-meta); color: var(--text-quiet); }
+  .srch__status { font-weight: 700; margin-bottom: 0.5rem; }
+  .srch__results :global(mark) { background: var(--surface-inset); font-weight: 700; }
+</style>

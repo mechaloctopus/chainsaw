@@ -1,0 +1,143 @@
+---
+import Base from '../../layouts/Base.astro';
+import { u } from '../../lib/url';
+import { site } from '../../data/site';
+---
+<Base
+  title="About"
+  description="Who this is for, what it refuses to be, and how a site designed for glare, gloves and no signal was built."
+>
+  <div class="shell railed flow abt">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h1>About this site</h1>
+    <p class="lead">
+      Hurricane Lowell put an island's worth of trees on the ground and put saws in the
+      hands of a lot of people who have never been taught to use one. This is the part of
+      that problem a website can actually help with.
+    </p>
+
+    <h2>Who it is for</h2>
+    <ul>
+      <li>
+        <b>The weekend warrior.</b> Owns a saw, cuts firewood, no formal training,
+        reasonably confident. The useful thing here is the list of failure modes — the
+        things that go wrong and what they look like on the way to going wrong.
+      </li>
+      <li>
+        <b>The new volunteer.</b> Wants to help and is not sure whether he should be
+        running a saw at all. The honest answer is often no, and
+        <a href={u('/modules/10-two-person-saw-team/')}>the swamper's job</a> is where
+        you are worth the most on day one.
+      </li>
+      <li>
+        <b>The crew lead.</b> Organizing neighbours or a church group. The briefing
+        script, the roles, the go/no-go criteria and the
+        <a href={u('/field-card/')}>printable card</a> are for you.
+      </li>
+      <li>
+        <b>The visiting helper.</b> Real skills from the mainland and no idea what
+        albizia does. Read
+        <a href={u('/modules/11-storm-hazards/')}>module 11</a> first.
+      </li>
+    </ul>
+
+    <h2>What it refuses to be</h2>
+    <p>
+      It does not certify anyone. There are no badges, no completion certificates, and no
+      scores that could be mistaken for competence — because a volunteer who believes a
+      website qualified him is more dangerous than one who knows he is a beginner.
+    </p>
+    <p>
+      It is not a replacement for NWCG S-212, Game of Logging, arborist training or your
+      employer's program. It points at those instead. And it does not teach felling
+      technique as sufficient for removals near structures or lines: that content
+      exists to teach recognition and refusal.
+    </p>
+
+    <h2>How it is built, and why it looks like this</h2>
+    <p>
+      Every constraint in the design is a real condition of the place it gets used.
+    </p>
+    <ul>
+      <li>
+        <b>It works with the network off.</b> The whole site caches on first visit. A crew
+        in Wailua Homesteads with no bars can still open the power line page. That is a
+        hard requirement, not a feature.
+      </li>
+      <li>
+        <b>It works with JavaScript off.</b> Every page renders complete. The
+        interactives — the hazard scan, the saw plate, the decoder — are enhancements
+        layered over content that is already there, because a fact that can kill you
+        should never depend on a script loading.
+      </li>
+      <li>
+        <b>The body typeface is Atkinson Hyperlegible Next</b>, built by the Braille
+        Institute for readers with low vision. It was chosen for glare and for tired
+        eyes, and it happens to be beautiful.
+      </li>
+      <li>
+        <b>Orange means danger and nothing else.</b> High-visibility PPE orange appears
+        only on hazards and stop-work blocks — never on a button, a link, a heading or a
+        decoration. On the homepage the scene is drawn without a single orange mark, and
+        the orange only appears where you find something that can kill you.
+      </li>
+      <li>
+        <b>Text starts at 18px and contrast is measured, not eyeballed.</b> Body text runs
+        at about 15:1 on the page ground. One of the six palette colours was demoted to
+        hairlines-only because it measured 3.9:1 and failed.
+      </li>
+      <li>
+        <b>Everything is thumb-sized and reachable.</b> Targets are at least 56px,
+        navigation sits in the bottom third of the screen, and nothing is revealed by
+        hovering — because nobody hovers with a glove on.
+      </li>
+      <li>
+        <b>Every diagram is drawn from scratch.</b> Original SVG, themed by the site's own
+        colour tokens, legible at 360px, with every label present as real text. No traced
+        manufacturer artwork, no recycled clip art.
+      </li>
+      <li>
+        <b>Numbers carry their provenance.</b> Any spec that has not been checked against
+        a primary source says so, in the open, and links to
+        <a href={u('/about/verify/')}>the list of what is unverified</a>.
+      </li>
+    </ul>
+
+    <h2>Fork it</h2>
+    <p>
+      Content is CC BY 4.0 and the code is MIT, deliberately. Maui, Hawai‘i Island,
+      O‘ahu, Puerto Rico, Florida, the Carolinas: the hazards rhyme, the species do not.
+      Take it, change the species, change the utility number, change the county rules,
+      and ship it.
+    </p>
+    <p><a href={site.repo}>The whole site is on GitHub</a>.</p>
+
+    <h2>How to help</h2>
+    <ol>
+      <li>
+        <b>Review a module.</b> The most valuable thing anyone can do right now. Every
+        module says at the top that it has not been reviewed by a second working sawyer,
+        because it hasn't. If you cut for a living, read one and push back hard.
+      </li>
+      <li>
+        <b>Verify a number.</b> <a href={u('/about/verify/')}>The unverified list</a> is
+        the backlog. Each line names who the authority is.
+      </li>
+      <li>
+        <b>Send photographs.</b> Real Kaua‘i cleanup work, with releases from anyone
+        identifiable. Original photography would make this site unfakeable.
+      </li>
+      <li>
+        <b>Translate it.</b> Crews on this island are multilingual and the site is
+        English-only. ‘Ōlelo Hawai‘i, Ilocano, Tagalog and Marshallese would each reach
+        people the current version does not.
+      </li>
+    </ol>
+  </div>
+</Base>
+
+<style>
+  .abt { padding-top: 2rem; }
+  .abt h2 { font-size: var(--text-h3); }
+  .abt li { margin-bottom: 0.2rem; }
+</style>

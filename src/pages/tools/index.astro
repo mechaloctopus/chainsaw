@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import { u } from '../../lib/url';
+
+const tools = [
+  {
+    href: '/reference/stihl/',
+    name: 'STIHL model decoder',
+    line: 'Type any model number — MS 261 C-M, MSA 220, MS 500i — and get a plain-English breakdown of the prefix, the number and every letter after it.',
+  },
+  {
+    href: '/modules/05-bar-chain-and-the-numbers/',
+    name: 'Chain finder',
+    line: 'Pitch, gauge and drive links off the bar stamp, and what to ask for at the counter. Plus the file size for that pitch.',
+  },
+  {
+    href: '/modules/02-anatomy-of-the-saw/',
+    name: 'Anatomy of the saw',
+    line: 'Fifteen parts on a labelled plate. Tap any one for its job and the specific way it fails.',
+  },
+  {
+    href: '/modules/10-two-person-saw-team/',
+    name: 'Tank-for-tank timer',
+    line: 'A rotation clock with a swap prompt and the six questions to run every time you swap roles.',
+  },
+  {
+    href: '/',
+    name: 'Hazard scan',
+    line: 'Five things in a post-storm yard that can kill you. Find them before the site shows you what you walked past.',
+  },
+  {
+    href: '/field-card/',
+    name: 'Printable field card',
+    line: 'One page: pre-start check, crew briefing, power line numbers, stop-work triggers. Print it and laminate it.',
+  },
+];
+---
+<Base
+  title="Tools"
+  description="A STIHL model decoder, a chain finder, a saw anatomy plate, a tank-for-tank rotation timer and a printable field card."
+>
+  <div class="shell railed flow toolsidx">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h1>Tools</h1>
+    <p class="lead">Small things that answer one question each. All of them work offline.</p>
+    <ul class="index">
+      {tools.map((t) => (
+        <li><a href={u(t.href)}>
+          <span class="index__title">{t.name}</span>
+          <span class="index__sub">{t.line}</span>
+        </a></li>
+      ))}
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .toolsidx { padding-top: 2rem; }
+</style>

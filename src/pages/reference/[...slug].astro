@@ -1,0 +1,15 @@
+---
+import { getCollection, render } from 'astro:content';
+import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
+import { mdxComponents } from '../../components/mdx';
+
+export async function getStaticPaths() {
+  const refs = await getCollection('reference');
+  return refs.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<ReferenceLayout entry={entry}>
+  <Content components={mdxComponents} />
+</ReferenceLayout>

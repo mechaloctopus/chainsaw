@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../lib/url';
+---
+<Base title="Page not found" description="That page does not exist.">
+  <div class="shell railed flow nf">
+    <span class="rail-mark" aria-hidden="true">404</span>
+    <h1>That page is not here</h1>
+    <p class="lead">
+      Nothing dangerous has happened. The link is just wrong or the page has moved.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--solid" href={u('/modules/')}>All modules</a>
+      <a class="btn" href={u('/search/')}>Search</a>
+      <a class="btn" href={u('/modules/12-downed-power-lines/')}>Downed power lines</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .nf { padding-top: 3rem; }
+</style>

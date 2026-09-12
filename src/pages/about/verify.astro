@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import { verifyItems } from '../../data/verify';
+const open = verifyItems.filter((v) => v.status === 'open');
+const done = verifyItems.filter((v) => v.status === 'verified');
+---
+<Base
+  title="Unverified specs"
+  description="Every number on this site that has not yet been checked against a primary source, and what the source is."
+>
+  <div class="shell railed flow vfy">
+    <span class="rail-mark" aria-hidden="true">?</span>
+    <h1>What has not been verified</h1>
+    <p class="lead">
+      This site publishes a number in one of two states: sourced, or openly marked as not
+      yet sourced. There is no third state where it quietly hopes to be right.
+    </p>
+    <p>
+      Everything below is written from working knowledge and has <b>not</b> been checked
+      against a primary source. Where any of it appears on the site, it renders as
+      <span class="spec">a figure</span>
+      <span class="spec-src spec-src--unverified">[unverified — check your manual]</span>
+      and links here. Your manual, your chain box, and the standard itself outrank this
+      site on every line of this page.
+    </p>
+
+    <h2>Open — {open.length} items</h2>
+    <div class="table-scroll">
+      <table>
+        <caption class="sr-only">Unverified specifications and their primary sources</caption>
+        <thead>
+          <tr><th scope="col">What</th><th scope="col">Where it appears</th><th scope="col">Who is the authority</th></tr>
+        </thead>
+        <tbody>
+          {open.map((v) => (
+            <tr><td>{v.what}</td><td>{v.where}</td><td>{v.source}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {done.length > 0 && (
+      <>
+        <h2>Verified</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th scope="col">What</th><th scope="col">Where</th><th scope="col">Source</th></tr></thead>
+            <tbody>{done.map((v) => <tr><td>{v.what}</td><td>{v.where}</td><td>{v.source}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </>
+    )}
+
+    <h2>Why this page exists</h2>
+    <p>
+      A safety site that publishes a torque figure it has not checked is worse than one
+      that says “check your manual”, because the first one gets believed. Numbers here
+      either carry their source or carry a warning — and this page is the list of the
+      second kind, in public, so it is visibly a debt rather than quietly a risk.
+    </p>
+    <p>
+      If you have a primary source for any line above,
+      <a href="https://github.com/mechaloctopus/chainsaw/issues">open an issue</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .vfy { padding-top: 2rem; }
+</style>

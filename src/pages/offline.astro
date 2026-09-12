@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import { contacts, LINE_CLEARANCE_FT } from '../data/site';
+import { u } from '../lib/url';
+---
+<Base
+  title="No signal"
+  description="You are offline and this page was not cached. Here is what matters most."
+>
+  <div class="shell railed flow off">
+    <span class="rail-mark" aria-hidden="true">!</span>
+    <h1>No signal, and this page was not saved</h1>
+    <p class="lead">
+      The rest of the site is on your phone. This particular page was not, which usually
+      means it is new since the last time you opened the site with a connection.
+    </p>
+
+    <aside class="hazard">
+      <p class="hazard__label">If a line is down</p>
+      <p>
+        Assume it is energized. Stay {LINE_CLEARANCE_FT} feet back. Call
+        <a href="tel:911">911</a>, then KIUC at
+        <a href={`tel:${contacts.kiuc.tel}`}>808-246-4300</a>. Never cut a tree touching,
+        near, or able to reach a line.
+      </p>
+      <p>
+        Feet together, small shuffling steps to get clear. Never a stride, never a run.
+      </p>
+    </aside>
+
+    <h2>The two questions, before every cut</h2>
+    <p class="lead">What is holding this up? Where does it go when it moves?</p>
+    <p>If you cannot answer both out loud, do not cut. Flag it and wait.</p>
+
+    <h2>Pages you already have</h2>
+    <ul class="index">
+      <li><a href={u('/modules/12-downed-power-lines/')}>
+        <span class="index__title">Downed power lines</span>
+        <span class="index__flag">Life safety</span>
+      </a></li>
+      <li><a href={u('/modules/00-before-you-touch-a-saw/')}>
+        <span class="index__title">Before you touch a saw</span>
+      </a></li>
+      <li><a href={u('/field-card/')}>
+        <span class="index__title">Field card</span>
+      </a></li>
+      <li><a href={u('/modules/')}>
+        <span class="index__title">All modules</span>
+      </a></li>
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .off { padding-top: 2rem; }
+</style>

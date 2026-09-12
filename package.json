@@ -10,14 +10,26 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist --output-subdir _pagefind",
+    "build": "astro build && pagefind --site dist --output-subdir _pagefind && node scripts/pwa.mjs",
     "preview": "astro preview",
-    "check": "astro check"
+    "serve": "node scripts/serve.mjs",
+    "check": "astro check",
+    "icons": "node scripts/icons.mjs",
+    "field-card": "node scripts/field-card-pdf.mjs",
+    "lint:rules": "node scripts/lint-rules.mjs",
+    "test:a11y": "node scripts/a11y.mjs",
+    "test:budget": "node scripts/budget.mjs",
+    "test:links": "node scripts/links.mjs",
+    "verify": "npm run lint:rules && npm run test:links && npm run test:budget"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.2",
     "pagefind": "^1.5.2"
+  },
+  "devDependencies": {
+    "axe-core": "^4.13.0",
+    "playwright-core": "^1.63.0"
   }
 }

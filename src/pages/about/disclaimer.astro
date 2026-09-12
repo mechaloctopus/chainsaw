@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import { u } from '../../lib/url';
+---
+<Base
+  title="Disclaimer and terms"
+  description="What this site is, what it is not, and the terms under which you use it."
+>
+  <div class="shell railed flow dsc">
+    <span class="rail-mark" aria-hidden="true">§</span>
+    <h1>Disclaimer and terms</h1>
+    <p class="lead">Short, because a disclaimer nobody reads protects nobody.</p>
+
+    <h2>This is reference material, not training</h2>
+    <p>
+      Reading this site does not make you trained, qualified, certified, or approved to
+      run a chainsaw. It issues no certificate, keeps no record, and awards nothing. If
+      you need a credential — for an employer, an agency, or an insurer — it comes from a
+      real course with a real evaluation, not from a web page.
+    </p>
+
+    <h2>Chainsaw work is dangerous and this site cannot make it safe</h2>
+    <p>
+      Chainsaws injure and kill experienced people. Storm debris adds stored energy,
+      unstable ground and hidden utilities to that. Nothing here removes those risks.
+      Every decision to make a cut is yours, made with your own eyes on your own job,
+      and you are responsible for it.
+    </p>
+
+    <h2>Your manual and your crew boss outrank this site</h2>
+    <p>
+      Where this site and your saw's manual disagree, the manual wins. Where this site
+      and your employer's, agency's or crew's rules disagree, they win. Where a figure
+      here is marked
+      <a href={u('/about/verify/')}>unverified</a>, treat it as a prompt to look it up,
+      not as an answer.
+    </p>
+
+    <h2>No warranty</h2>
+    <p>
+      This site is provided as-is, with no warranty of any kind, express or implied,
+      including accuracy, completeness, or fitness for a particular purpose. To the
+      fullest extent permitted by law, the authors and contributors accept no liability
+      for any loss, injury, or damage arising from the use of, or reliance on, anything
+      published here.
+    </p>
+
+    <h2>Power lines</h2>
+    <p>
+      The <a href={u('/modules/12-downed-power-lines/')}>downed power lines</a> module
+      states one rule with no exceptions: assume every line is energized, stay 30 feet
+      back, and never cut anything touching or able to reach a line. If any other page
+      here appears to soften that, the power line module is correct and the other page is
+      wrong — tell us and it gets fixed.
+    </p>
+
+    <h2>Content and code</h2>
+    <p>
+      Content is licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY
+      4.0</a>: use it, adapt it, translate it, fork it for your island, with attribution.
+      Code is MIT. Fonts are used under the SIL Open Font License. Third-party assets are
+      listed with their licenses in <code>ASSET_LICENSES.csv</code> in the repository.
+    </p>
+    <p>
+      STIHL and ECHO are trademarks of their respective owners. They are used here
+      nominatively, to describe real products people own. No endorsement, sponsorship or
+      affiliation is claimed or implied, and no manufacturer logo, brand color, or
+      manual artwork appears anywhere on this site.
+    </p>
+
+    <h2>Privacy</h2>
+    <p>
+      No accounts, no cookies, no analytics, no tracking, no ad networks, and nothing is
+      sent anywhere when you use the tools — the STIHL decoder, the chain finder, the
+      rotation timer and the checklists all run entirely on your own device. Checklist
+      ticks and the rotation timer are stored in your browser's local storage and never
+      leave it. That is why there is no cookie banner.
+    </p>
+
+    <h2>Corrections</h2>
+    <p>
+      If something here is wrong, it matters more than most websites being wrong. Open an
+      issue at <a href="https://github.com/mechaloctopus/chainsaw/issues">github.com/mechaloctopus/chainsaw</a>,
+      and say which page and what is wrong with it.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .dsc { padding-top: 2rem; }
+  .dsc h2 { font-size: var(--text-h3); }
+</style>

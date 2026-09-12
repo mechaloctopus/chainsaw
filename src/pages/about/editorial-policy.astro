@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import { u } from '../../lib/url';
+---
+<Base
+  title="Editorial and affiliate policy"
+  description="How this site handles money, why there are no product links on life-safety pages, and why there are no STIHL links at all."
+>
+  <div class="shell railed flow pol">
+    <span class="rail-mark" aria-hidden="true">$</span>
+    <h1>Editorial and affiliate policy</h1>
+    <p class="lead">
+      Written as a public commitment so it can be held against us.
+    </p>
+
+    <h2>The rules</h2>
+    <ol>
+      <li>
+        <b>Commission never influences what is recommended or the order it appears in.</b>
+        Gear is specified by the standard it has to meet first — ASTM F1897 chaps, a
+        semi-chisel chain in the right pitch and gauge — and products come second, as
+        examples of that specification.
+      </li>
+      <li>
+        <b>No commercial links on life-safety pages.</b> Power lines, PPE and the buddy
+        rule, kickback, storm hazards, felling, and anything about what to do when
+        someone is bleeding: those pages carry no affiliate links, no sponsor mentions,
+        and nothing to buy. They are marked “life-safety page — no product links” at the
+        top.
+      </li>
+      <li>
+        <b>Disclosure at the top of the page, not buried in the footer.</b> Any page with
+        affiliate links says so in plain language before the content starts.
+      </li>
+      <li>
+        <b>A local dealer is listed alongside any online option.</b> Every time.
+      </li>
+      <li>
+        <b>No paid reviews, no sponsored placements in content, no ranking for payment.</b>
+        If a sponsor ever appears on this site, it will be as a named sponsor in a fixed
+        place, not woven into a recommendation.
+      </li>
+    </ol>
+
+    <h2>Why there are no STIHL product links anywhere</h2>
+    <p>
+      STIHL sells through its authorized dealer network and dealers are not permitted to
+      sell new STIHL products online outside STIHL's own structure. There is no US
+      affiliate program to join.
+    </p>
+    <p>
+      The practical consequence is the part that matters to you: the STIHL saws listed on
+      general online marketplaces are third-party stock, frequently gray-market, and
+      typically carry no manufacturer warranty. Sending you to one of those would earn
+      this site a commission and leave you with a worse saw and no support.
+    </p>
+    <p>
+      So the <a href={u('/reference/stihl/')}>STIHL page</a> links to dealers and to
+      nothing else. That is not a favour — it is the only honest version of that page.
+    </p>
+
+    <h2>Where the money would come from, if there is any</h2>
+    <p>
+      Being specific about this is part of the policy.
+    </p>
+    <ul>
+      <li>
+        <b>Consumables.</b> Chains, files, bar oil, fuel cans, wedges, chaps, helmets,
+        trauma kits. Things people genuinely need, replace often, and mostly buy at the
+        wrong specification — which is exactly where a standards-first recommendation
+        helps rather than distorts.
+      </li>
+      <li>
+        <b>Arborist suppliers</b> where they carry the gear the big retailers do not.
+      </li>
+      <li>
+        <b>Local sponsorship.</b> A Kaua‘i dealer or rental yard sponsoring the site
+        outright is worth more than a year of affiliate clicks and is more honest. If
+        that happens, it will be named plainly on this page and nowhere else.
+      </li>
+      <li>
+        <b>Grants and partnerships</b> — county, resilience funding, a VOAD partnership.
+      </li>
+    </ul>
+    <p>
+      As of this writing the site earns nothing and has no affiliate relationships in
+      place. When that changes, this page changes first.
+    </p>
+
+    <h2>No tracking, and why that is a policy and not a boast</h2>
+    <p>
+      No cookies, no analytics, no ad networks, no third-party scripts. Partly on
+      principle, partly because it has to work offline and every third-party request is
+      something that fails at the exact moment somebody needs this page in Wailua
+      Homesteads with no bars.
+    </p>
+
+    <h2>Corrections and conflicts</h2>
+    <p>
+      If you think a recommendation here is shaped by money rather than by what works,
+      say so in public: <a href="https://github.com/mechaloctopus/chainsaw/issues">open
+      an issue</a>. The whole site is in that repository, including this page's history.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .pol { padding-top: 2rem; }
+  .pol h2 { font-size: var(--text-h3); }
+</style>

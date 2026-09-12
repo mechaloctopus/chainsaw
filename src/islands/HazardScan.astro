@@ -13,12 +13,12 @@ import { u } from '../lib/url';
 <section class="scan" data-scan aria-labelledby="scan-h">
   <div class="shell">
     <h1 id="scan-h" class="scan__head">
-      Five things in this yard<br />can kill you.<span class="scan__sub">Find them.</span>
+      Five things here can kill you.<span class="scan__sub">Find them.</span>
     </h1>
   </div>
 
   <figure class="scan__fig">
-    <svg viewBox="0 0 800 480" class="scene" role="img" aria-labelledby="scene-t scene-d">
+    <svg viewBox="0 40 800 400" class="scene" role="img" aria-labelledby="scene-t scene-d">
       <title id="scene-t">A Kaua‘i yard after a hurricane, with five hidden hazards</title>
       <desc id="scene-d">
         A large albizia lies across a yard, its root ball half out of the ground. A
@@ -58,17 +58,17 @@ import { u } from '../lib/url';
           <path class="limb-broke thin" d="M196 186 236 176M120 142 104 108" />
         </g>
 
-        <!-- the downed albizia -->
-        <path class="log" d="M292 296c118-30 250-20 470-42l6 44c-214 40-350 32-468 46z" />
-        <path class="log-end" d="M760 254c14-2 24 6 26 20s-6 24-20 26z" />
-        <path class="log-shade" d="M296 326c116-12 250-6 462-42l4 14c-210 40-348 32-464 46z" />
-        <!-- crown, pale brittle albizia wood, running off the right edge -->
-        <path class="crown" d="M700 258 800 190M716 262 800 246M712 276 800 300M694 268 780 212M706 286 800 340" />
+        <!-- the downed albizia: the subject of the picture -->
+        <path class="crown" d="M690 268 800 180M700 272 800 232M706 290 800 318M686 276 792 208M700 300 800 372" />
+        <path class="log" d="M250 288c130-34 268-20 500-44l10 62c-232 42-372 34-502 52z" />
+        <path class="log-shade" d="M258 330c128-14 268-6 494-42l4 18c-226 40-368 32-496 50z" />
+        <path class="log-end" d="M748 244c18-2 32 10 34 28s-8 32-26 34z" />
+        <path class="log-rings" d="M756 258a22 22 0 0 1 0 44M762 266a14 14 0 0 1 0 28" />
 
         <!-- root ball: still hinged, still holding everything up -->
         <g data-shape="rootball">
           <path class="hole" d="M196 356q10-34 54-38l40 6-6 32z" />
-          <path class="rootmass" d="M286 254q-56-6-84 30t14 72q34 26 76 8 26-12 26-56 0-48-32-54z" />
+          <path class="rootmass" d="M288 248q-60-8-90 30t14 78q36 28 82 8 28-14 28-60 0-48-34-56z" />
           <path class="roots" d="M236 258 200 226M212 286 168 274M212 324 166 336M244 350 214 380M282 250 296 210M300 294 344 288" />
         </g>
 
@@ -116,8 +116,13 @@ import { u } from '../lib/url';
           ))}
         </g>
 
-        <!-- hit targets, added by script only; inert without JS -->
-        <g class="hits" data-hits hidden></g>
+        <!-- hit targets: hidden until JS makes them controls, so a no-JS
+             reader is never offered something that does nothing -->
+        <g class="hits" data-hits hidden>
+          {hz.map((h) => (
+            <circle class="hit" data-hit={h.id} cx={h.cx} cy={h.cy} r={h.r} />
+          ))}
+        </g>
       </g>
     </svg>
 
@@ -205,26 +210,21 @@ import { u } from '../lib/url';
       else say();
     };
 
-    // Targets are injected rather than shipped in the HTML so that a
-    // no-JS reader is never offered a control that does nothing.
+    // The targets are in the markup already; JS promotes them to controls.
     hits.hidden = false;
     sceneHazards.forEach((h) => {
-      const g = document.createElementNS(NS, 'circle');
-      g.setAttribute('cx', String(h.cx));
-      g.setAttribute('cy', String(h.cy));
-      g.setAttribute('r', String(h.r));
-      g.setAttribute('class', 'hit');
+      const g = hits.querySelector<SVGCircleElement>(`[data-hit="${h.id}"]`);
+      if (!g) return;
       g.setAttribute('role', 'button');
       g.setAttribute('tabindex', '0');
       g.setAttribute('aria-pressed', 'false');
-      g.setAttribute('aria-label', `Hazard, unidentified, ${h.id}`);
+      g.setAttribute('aria-label', 'Hazard, unidentified');
       const go = (e: Event) => { e.stopPropagation(); hit(h, g); };
       g.addEventListener('click', go);
       g.addEventListener('keydown', (e) => {
         const k = (e as KeyboardEvent).key;
         if (k === 'Enter' || k === ' ') { e.preventDefault(); go(e); }
       });
-      hits.appendChild(g);
     });
 
     svg.addEventListener('click', (e) => {
@@ -265,19 +265,28 @@ import { u } from '../lib/url';
 <style>
   .scan { display: grid; gap: 0; }
   .scan__head {
-    font-size: var(--text-mega);
-    line-height: 0.86;
+    font-size: clamp(2.125rem, 1rem + 6vw, 4.5rem);
+    line-height: 0.88;
     letter-spacing: -0.035em;
-    padding-block: 1.5rem 1rem;
-    max-width: 22ch;
+    padding-block: 1.2rem 0.9rem;
+    max-width: 20ch;
+    overflow-wrap: break-word;
   }
   .scan__sub { display: block; color: var(--accent); }
-  .scan__fig { margin: 0; }
+  .scan__fig {
+    margin: 0;
+    background: var(--surface-inset);
+    border-block: 2px solid var(--line-strong);
+  }
   .scene {
     width: 100%;
     height: auto;
     display: block;
-    border-block: 2px solid var(--line-strong);
+    /* Full bleed on a phone; on a laptop the plate is bounded so the headline,
+       the scene and the score all land above the fold. */
+    max-width: 64rem;
+    margin-inline: auto;
+    border-inline: 1px solid var(--line);
     touch-action: manipulation;
   }
 
@@ -295,12 +304,17 @@ import { u } from '../lib/url';
   }
   .scene .limb-broke { stroke: var(--color-ink); stroke-width: 13; stroke-linecap: round; fill: none; }
   .scene .limb-broke.thin { stroke-width: 7; }
-  .scene .log { fill: color-mix(in oklab, var(--color-pith) 78%, var(--color-dirt)); }
-  .scene .log-shade { fill: color-mix(in oklab, var(--color-dirt) 55%, var(--color-ink)); }
-  .scene .log-end { fill: color-mix(in oklab, var(--color-pith) 92%, var(--color-dirt)); }
+  .scene .log { fill: color-mix(in oklab, var(--color-dirt) 62%, var(--color-ink)); }
+  .scene .log-shade { fill: color-mix(in oklab, var(--color-ink) 82%, var(--color-dirt)); }
+  .scene .log-end { fill: color-mix(in oklab, var(--color-pith) 88%, var(--color-dirt)); }
+  .scene .log-rings {
+    fill: none;
+    stroke: color-mix(in oklab, var(--color-dirt) 70%, var(--color-ink));
+    stroke-width: 3;
+  }
   .scene .crown {
-    stroke: color-mix(in oklab, var(--color-pith) 70%, var(--color-dirt));
-    stroke-width: 8; stroke-linecap: round; fill: none;
+    stroke: color-mix(in oklab, var(--color-dirt) 52%, var(--color-ink));
+    stroke-width: 9; stroke-linecap: round; fill: none;
   }
   .scene .hole { fill: var(--color-ink); }
   .scene .rootmass { fill: color-mix(in oklab, var(--color-dirt) 78%, var(--color-ink)); }
@@ -340,7 +354,7 @@ import { u } from '../lib/url';
 
   .scene .hit { fill: transparent; cursor: pointer; }
   .scene .hit:focus-visible { outline: none; fill: color-mix(in oklab, var(--color-ink) 12%, transparent); stroke: var(--focus); stroke-width: 4; }
-  .scene .miss { stroke: var(--color-steel); stroke-width: 4; opacity: 0.8; }
+  .scene :global(.miss) { stroke: var(--color-steel); stroke-width: 4; opacity: 0.8; fill: none; }
 
   .scan__bar {
     display: flex;

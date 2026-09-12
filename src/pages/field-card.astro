@@ -1,0 +1,230 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { contacts, LINE_CLEARANCE_FT } from '../data/site';
+import { u } from '../lib/url';
+
+const mods = (await getCollection('modules'))
+  .filter((m) => !m.data.draft)
+  .sort((a, b) => a.data.num.localeCompare(b.data.num));
+
+/** The card is generated from the modules, so it cannot drift out of step
+ *  with them. Every line below is a module's own field card line. */
+const lines = mods.flatMap((m) => m.data.fieldCard.map((t) => ({ num: m.data.num, t })));
+
+const prestart = [
+  'Chain brake — test it, chain must stop',
+  'Chain catcher present',
+  'Bar rails, groove, oil hole clear',
+  'Chain sharp, tension right, links undamaged',
+  'Sprocket wear · E-clip + washer on',
+  'Bar nuts tight',
+  'Air filter clean AND sealed',
+  'Plug and boot (carry a spare)',
+  'Fuel + bar oil both full',
+  'Muffler screen clear',
+  'AV mounts, bolts, no cracks',
+  'Starter cord good',
+];
+
+const briefing = [
+  'The plan — what we cut, in what order',
+  'The hazards — lines, root ball, spring poles, hangers, bees',
+  'The escape routes — cleared, not just noticed',
+  'Stop-work signal — flat hand held up. Anyone can call it.',
+  'Who calls 911, and the location we give',
+  'Where the truck is, keys in it, route out clear',
+  'What we are NOT doing today',
+];
+
+const stops = [
+  'A line is down, or a tree is touching / could reach one',
+  'A tree is hung up in another tree',
+  'Anything broken is hanging above the work area',
+  'You cannot say what holds it up or where it goes',
+  'The trunk sounds hollow',
+  'You need to cut above shoulder height',
+  'The chain brake does not stop the chain',
+  'Your partner is in your zone and you did not nod him in',
+  'You are alone',
+  'You are too tired to answer the six questions honestly',
+];
+---
+<Base
+  title="Field card"
+  description="One printable page: pre-start check, crew briefing, power line numbers, stop-work triggers and every module's field card line."
+>
+  <div class="shell railed flow fc-intro no-print">
+    <span class="rail-mark" aria-hidden="true">◆</span>
+    <h1>Field card</h1>
+    <p class="lead">
+      One page, built from the modules so it cannot drift out of step with them. Print it,
+      laminate it, and keep it with the saw.
+    </p>
+    <div class="btn-row">
+      <button class="btn btn--solid" type="button" id="fc-print">Print this page</button>
+      <a class="btn" href={u('/field-card.pdf')}>Download the PDF</a>
+    </div>
+    <p class="fc-note">
+      Printed type on this card is smaller than the 18px floor the rest of the site holds
+      to. That is deliberate: a laminated card is read at arm's length in your hand, not
+      at phone distance in glare. Everything safety-critical on it is set in bold.
+    </p>
+  </div>
+
+  <div class="card">
+    <header class="card__head">
+      <h2>Kaua‘i Saw School — field card</h2>
+      <p>Not a certification. Reference only. Follow your crew boss and your manual.</p>
+    </header>
+
+    <section class="card__box card__box--hz">
+      <h3>If a line is down</h3>
+      <p class="card__big">
+        Assume it is energized. Stay {LINE_CLEARANCE_FT} ft back.
+      </p>
+      <ol class="card__calls">
+        <li><b>911</b> first</li>
+        <li><b>KIUC {contacts.kiuc.label.replace('KIUC ', '')}</b></li>
+        <li><b>811</b> before any digging (or 866-423-7287)</li>
+      </ol>
+      <p>
+        Never cut a tree touching, near, or able to reach a line. Feet together, small
+        shuffling steps to get clear — never a stride. Line on a vehicle: stay inside,
+        call 911, only exit for fire and then jump clear.
+      </p>
+    </section>
+
+    <section class="card__box card__box--hz">
+      <h3>Before every cut</h3>
+      <p class="card__big">What is holding this up? Where does it go when it moves?</p>
+      <p>Cannot answer both, out loud? Do not cut. Flag it and wait.</p>
+    </section>
+
+    <div class="card__cols">
+      <section class="card__box">
+        <h3>Pre-start, in order</h3>
+        <ol class="card__tight">
+          {prestart.map((p) => <li>{p}</li>)}
+        </ol>
+      </section>
+
+      <section class="card__box">
+        <h3>Crew briefing</h3>
+        <ol class="card__tight">
+          {briefing.map((p) => <li>{p}</li>)}
+        </ol>
+        <h3 class="card__h3b">Tank for tank</h3>
+        <p>
+          Swap sawyer and swamper every tank. At every swap: has anything moved · is the
+          escape path clear · anything hung up above us · chips or dust · are we cooked ·
+          any bystanders.
+        </p>
+      </section>
+    </div>
+
+    <section class="card__box card__box--hz">
+      <h3>Stop work — any one is enough</h3>
+      <ul class="card__tight card__tight--dash">
+        {stops.map((s) => <li>{s}</li>)}
+      </ul>
+    </section>
+
+    <section class="card__box">
+      <h3>One line from every module</h3>
+      <ul class="card__lines">
+        {lines.map((l) => (
+          <li><span class="card__num">{l.num}</span> {l.t}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="card__box">
+      <h3>Our crew</h3>
+      <table class="card__fill">
+        <tbody>
+          <tr><th scope="row">Location (as you'd tell a dispatcher)</th><td></td></tr>
+          <tr><th scope="row">Who calls 911</th><td></td></tr>
+          <tr><th scope="row">Nearest vehicle access</th><td></td></tr>
+          <tr><th scope="row">Signal here?</th><td></td></tr>
+          <tr><th scope="row">Allergies / epi-pen</th><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="card__foot">
+      kauaisawschool.org · content CC BY 4.0 · this card does not make anyone qualified
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('fc-print')?.addEventListener('click', () => window.print());
+  </script>
+</Base>
+
+<style>
+  .fc-intro { padding-top: 2rem; }
+  .fc-note { font-size: var(--text-meta); color: var(--text-quiet); }
+
+  .card {
+    max-width: 58rem;
+    margin: 2rem auto 0;
+    padding: 0 var(--pad-x) 2rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .card__head { border-bottom: 2px solid var(--line-strong); padding-bottom: 0.5rem; }
+  .card__head h2 { font-size: var(--text-h3); }
+  .card__head p { font-size: var(--text-meta); color: var(--text-quiet); }
+  .card__box {
+    border: 1px solid var(--line-strong);
+    padding: 0.7rem 0.8rem;
+    font-size: 1rem;
+  }
+  .card__box > * + * { margin-top: 0.4rem; }
+  .card__box h3 {
+    font-size: 0.9375rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .card__h3b { margin-top: 0.7rem !important; }
+  .card__box--hz { border-left: 0.4rem solid var(--hazard); }
+  .card__big { font-weight: 700; font-size: 1.0625rem; line-height: 1.3; }
+  .card__calls { list-style: none; padding: 0 !important; display: grid; gap: 0.2rem; }
+  .card__cols { display: grid; gap: 0.75rem; }
+  @media (min-width: 44rem) { .card__cols { grid-template-columns: 1fr 1fr; } }
+  .card__tight { padding-left: 1.2rem; display: grid; gap: 0.18rem; font-size: 0.9375rem; }
+  .card__tight--dash { list-style: none; padding-left: 0 !important; }
+  .card__tight--dash li::before { content: '– '; font-weight: 700; }
+  .card__lines { list-style: none; padding: 0 !important; display: grid; gap: 0.22rem; font-size: 0.9375rem; }
+  .card__num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text-quiet);
+    margin-right: 0.3rem;
+  }
+  .card__fill { font-size: 0.9375rem; }
+  .card__fill th { font-weight: 400; width: 45%; }
+  .card__fill td { border-bottom: 1px solid var(--line-strong); }
+  .card__foot { font-size: 0.8125rem; color: var(--text-quiet); }
+
+  @media print {
+    @page { size: letter portrait; margin: 8mm; }
+    .card {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      gap: 2.4mm;
+      font-size: 8pt;
+    }
+    .card__box { padding: 1.8mm 2.2mm; border-color: #000; break-inside: avoid; }
+    .card__box h3 { font-size: 7.5pt; }
+    .card__big { font-size: 9pt; }
+    .card__tight, .card__lines, .card__fill, .card__calls { font-size: 7.4pt; }
+    .card__cols { grid-template-columns: 1fr 1fr; gap: 2.4mm; }
+    .card__lines { grid-template-columns: 1fr 1fr; column-gap: 4mm; }
+    .card__box--hz { border-left: 1.2mm solid #000; }
+    .card__head h2 { font-size: 11pt; }
+    .sitefoot, .masthead { display: none !important; }
+  }
+</style>
